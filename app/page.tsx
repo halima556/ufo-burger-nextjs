@@ -401,6 +401,92 @@ export default function Home() {
       <footer className="site-footer">
         <p>UFO BURGER - Built to attract demand, loyalty, and serious partners before opening day.</p>
       </footer>
+
+      <div className="investor-modal" id="investor-modal" hidden>
+        <div className="investor-modal__overlay"></div>
+        <section
+          className="investor-modal__dialog panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="investor-modal-title"
+        >
+          <button className="investor-modal__close" type="button">
+            Close
+          </button>
+          <h2 id="investor-modal-title">Investor Contact</h2>
+          <p className="section-subtitle">SEND YOUR DETAILS TO WHATSAPP</p>
+
+          <form id="investor-form" className="crew-form">
+            <label htmlFor="investor-name">YOUR NAME</label>
+            <input
+              id="investor-name"
+              name="name"
+              type="text"
+              minLength={2}
+              maxLength={80}
+              autoComplete="name"
+              placeholder="Enter your name"
+              required
+            />
+
+            <label htmlFor="investor-type">LEAD TYPE</label>
+            <select id="investor-type" name="leadType" defaultValue="Investor" required>
+              <option value="Investor">Investor</option>
+              <option value="Partner">Partner</option>
+              <option value="Customer">Customer</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <label htmlFor="investor-email">EMAIL ADDRESS</label>
+            <input
+              id="investor-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="your@email.com"
+              required
+            />
+
+            <label htmlFor="investor-phone">PHONE / WHATSAPP</label>
+            <input
+              id="investor-phone"
+              name="phone"
+              type="tel"
+              minLength={6}
+              maxLength={30}
+              autoComplete="tel"
+              placeholder="+44..."
+              required
+            />
+
+            <label htmlFor="investor-company">COMPANY (OPTIONAL)</label>
+            <input
+              id="investor-company"
+              name="company"
+              type="text"
+              maxLength={80}
+              autoComplete="organization"
+              placeholder="Your company name"
+            />
+
+            <label htmlFor="investor-message">MESSAGE (OPTIONAL)</label>
+            <textarea
+              id="investor-message"
+              name="message"
+              rows={4}
+              maxLength={500}
+              placeholder="Tell us what kind of partnership or investment you are looking for..."
+            ></textarea>
+
+            <div className="form-actions">
+              <button className="btn btn-primary" type="submit">Send via WhatsApp</button>
+            </div>
+
+            <p className="form-note">Your details will be prepared in WhatsApp before sending.</p>
+            <p id="investor-form-status" className="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
     </>
   );
 }
