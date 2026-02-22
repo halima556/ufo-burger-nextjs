@@ -172,6 +172,100 @@ export default function Home() {
                 <p className="menu-detail">Lamb, roasted pepper, paprika, yogurt-garlic sauce.</p>
               </div>
             </article>
+
+            <article
+              className="menu-item menu-feature menu-feature--saturn savory reveal-item"
+              style={{ ["--reveal-delay" as any]: "0.08s" }}
+            >
+              <img src="/assets/media/saturn.png" alt="Saturn Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Saturn</h3>
+                <p className="tag">Balanced, BBQ-forward</p>
+                <p className="menu-detail">Beef, onion rings, BBQ sauce, cheddar.</p>
+              </div>
+            </article>
+
+            <article
+              className="menu-item menu-feature menu-feature--neptune savory reveal-item"
+              style={{ ["--reveal-delay" as any]: "0.1s" }}
+            >
+              <img src="/assets/media/neptune.png" alt="Neptune Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Neptune</h3>
+                <p className="tag">Cool and refreshing</p>
+                <p className="menu-detail">Fish or chicken, yogurt sauce, mint, lime.</p>
+              </div>
+            </article>
+
+            <article
+              className="menu-item menu-feature menu-feature--pluto savory reveal-item"
+              style={{ ["--reveal-delay" as any]: "0.12s" }}
+            >
+              <img src="/assets/media/pluto.png" alt="Pluto Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Pluto</h3>
+                <p className="tag">Deep, mysterious, sweet-salty</p>
+                <p className="menu-detail">Beef, black garlic sauce, sesame.</p>
+              </div>
+            </article>
+
+            <article className="menu-item menu-feature savory reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
+              <img src="/assets/media/sirius1.png" alt="Sirius Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Sirius</h3>
+                <p className="tag">Rich, caramel-smoky</p>
+                <p className="menu-detail">Premium beef, caramelized onion, BBQ sauce.</p>
+              </div>
+            </article>
+
+            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.16s" }}>
+              <div className="menu-copy">
+                <p className="menu-type">Sweet Line</p>
+                <h3>Aurora</h3>
+                <p className="tag">Berry-cream, light</p>
+                <p className="menu-detail">Soft bun, blueberry cream, lavender syrup.</p>
+              </div>
+            </article>
+
+            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.18s" }}>
+              <div className="menu-copy">
+                <p className="menu-type">Sweet Line</p>
+                <h3>Ice Comet</h3>
+                <p className="tag">Cold, minty, creamy</p>
+                <p className="menu-detail">Ice cream, mint, white chocolate.</p>
+              </div>
+            </article>
+
+            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.2s" }}>
+              <div className="menu-copy">
+                <p className="menu-type">Sweet Line</p>
+                <h3>Dark Matter</h3>
+                <p className="tag">Chocolate, deep, sweet-salty</p>
+                <p className="menu-detail">Chocolate ganache, sea salt, black bun.</p>
+              </div>
+            </article>
+
+            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.22s" }}>
+              <div className="menu-copy">
+                <p className="menu-type">Sweet Line</p>
+                <h3>Luna</h3>
+                <p className="tag">Milky, delicate, creamy</p>
+                <p className="menu-detail">White chocolate, coconut, cream.</p>
+              </div>
+            </article>
+
+            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.24s" }}>
+              <div className="menu-copy">
+                <p className="menu-type">Sweet Line</p>
+                <h3>Cosmic Cloud</h3>
+                <p className="tag">Airy, vanilla</p>
+                <p className="menu-detail">Whipped cream, meringue, vanilla.</p>
+              </div>
+            </article>
           </div>
         </section>
       </main>
