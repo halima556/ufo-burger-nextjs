@@ -125,6 +125,35 @@ export default function Home() {
             </article>
           </div>
         </section>
+
+        <section id="menu" className="section section-menu">
+          <div className="section-head">
+            <p className="kicker">03</p>
+            <h2>Galaxy Menu</h2>
+            <p className="section-subtitle">DESIGNED TO ATTRACT CUSTOMERS AND INVESTORS</p>
+          </div>
+
+          <div className="menu-switch" aria-label="Menu categories">
+            <button className="tab-btn" type="button">All</button>
+            <button className="tab-btn" type="button">Savory Burgers</button>
+            <button className="tab-btn" type="button">Sweet Line</button>
+          </div>
+
+          <div className="menu-grid">
+            <article
+              className="menu-item menu-feature menu-feature--mercury savory reveal-item"
+              style={{ ["--reveal-delay" as any]: "0.02s" }}
+            >
+              <img src="/assets/media/mercury2.PNG" alt="Mercury Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Mercury</h3>
+                <p className="tag">Spicy, hot, sharp</p>
+                <p className="menu-detail">Beef, jalapeno, chili sauce, lime, smoked paprika.</p>
+              </div>
+            </article>
+          </div>
+        </section>
       </main>
     </>
   );
