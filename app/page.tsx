@@ -298,6 +298,58 @@ export default function Home() {
                 No launch members have joined yet.
               </p>
             </article>
+
+            <form className="panel crew-form" id="crew-form">
+              <label htmlFor="name">YOUR NAME</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                minLength={2}
+                maxLength={50}
+                autoComplete="name"
+                placeholder="Enter your name"
+                required
+              />
+
+              <label htmlFor="email">EMAIL ADDRESS</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="your@email.com"
+                required
+              />
+
+              <label htmlFor="phone">PHONE / WHATSAPP</label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                minLength={6}
+                maxLength={30}
+                autoComplete="tel"
+                placeholder="+44..."
+                required
+              />
+
+              <label htmlFor="message">MESSAGE (OPTIONAL)</label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                maxLength={280}
+                placeholder="Tell us about your favorite planet..."
+              ></textarea>
+
+              <div className="form-actions">
+                <button className="btn btn-primary" type="submit">Join the waitlist</button>
+              </div>
+
+              <p className="form-note">We will send your first launch signal and opening updates.</p>
+              <p id="form-status" className="form-status" role="status" aria-live="polite"></p>
+            </form>
           </div>
         </section>
       </main>
