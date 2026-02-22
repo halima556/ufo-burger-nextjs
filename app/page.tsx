@@ -1,65 +1,131 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <div className="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+      <button className="back-to-top" id="back-to-top" type="button" aria-label="Back to top">
+        ↑ Top
+      </button>
+
+      <header className="site-header">
+        <a href="#top" className="brand brand--glow">UFO BURGER</a>
+      </header>
+
+      <section className="hero" id="top">
+        <div className="hero-media">
+          <video className="hero-video" preload="auto" autoPlay muted loop playsInline>
+            <source src="/assets/media/hero-compressed.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay"></div>
+        </div>
+
+        <div className="hero-content">
+          <p className="eyebrow">Since 1987 - Recipes from another orbit</p>
+          <h1>Premium Closed Burgers from Distant Worlds</h1>
+          <p>
+            Cosmic flavor, premium craft, and limited first access in Wallsend. Join early and be
+            first in line when the hatch opens.
           </p>
+
+          <div className="hero-actions">
+            <a className="btn btn-primary" href="#crew">Join the waitlist</a>
+            <a className="btn btn-ghost" href="#menu">Explore the menu</a>
+            <button className="btn btn-subtle" type="button">
+              For partners / investors
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </section>
+
+      <main>
+        <section id="legend" className="legend-epic">
+          <div className="legend-epic__inner">
+            <div className="legend-head reveal-item" style={{ ["--reveal-delay" as any]: "0.02s" }}>
+              <p className="kicker">01</p>
+              <h2>The Legend</h2>
+              <p className="section-subtitle">HOW IT ALL BEGAN</p>
+            </div>
+
+            <article className="legend-chapter reveal-item" style={{ ["--reveal-delay" as any]: "0.08s" }}>
+              <p className="legend-lead legend-lead--plain">
+                <span className="legend-year">1987.</span> A streak of light cuts across Wallsend, then disappears before sunrise.
+              </p>
+              <p>
+                No crater. No wreckage. Only a scorched capsule and a coded menu blueprint no one
+                could decode.
+              </p>
+              <p>
+                Inside were signatures from distant systems, ingredients mapped to planets, and one
+                instruction stamped in red: &quot;Serve when Earth is ready.&quot;
+              </p>
+            </article>
+
+            <article className="legend-chapter reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
+              <h3>Hook + Cliffhanger</h3>
+              <p className="section-subtitle">THE SIGNAL RETURNS</p>
+              <p className="legend-lead">
+                For years, the capsule stayed sealed. This season, it activated.
+              </p>
+              <p>
+                One by one, the planet formulas unlocked - Mercury, Venus, Mars, and beyond - each
+                profile built for craving, repeat visits, and pure word-of-mouth.
+              </p>
+              <blockquote className="legend-quote">
+                The final protocol is still encrypted. It only opens after first contact with the Crew.
+              </blockquote>
+              <p>
+                First contact starts here: join the Crew, unlock the transmission, and take your place
+                in the first launch line.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="project" className="section">
+          <div className="section-head">
+            <p className="kicker">02</p>
+            <h2>Why UFO Burger</h2>
+            <p className="section-subtitle">BIG FLAVOR. CLEAR CHOICE.</p>
+          </div>
+          <div className="grid two-col">
+            <article className="panel">
+              <h3>Planet Recipes</h3>
+              <p>Every burger has its own planet profile, texture, and flavor identity.</p>
+              <ul>
+                <li>Mercury to Pluto flavor signatures</li>
+                <li>Closed-burger format built for freshness</li>
+                <li>Distinct taste profiles you can remember</li>
+              </ul>
+            </article>
+            <article className="panel">
+              <h3>Fast &amp; Satisfying</h3>
+              <ul>
+                <li>Made for quick pick-up and easy repeat orders</li>
+                <li>Balanced savory menu plus sweet line</li>
+                <li>Crafted for strong flavor without heavy feel</li>
+              </ul>
+            </article>
+          </div>
+          <div className="grid four-col project-facts">
+            <article className="panel">
+              <h3>Opening Soon</h3>
+              <p>First launch in Wallsend</p>
+            </article>
+            <article className="panel">
+              <h3>Location</h3>
+              <p>Wallsend</p>
+            </article>
+            <article className="panel">
+              <h3>Signature Line</h3>
+              <p>Savory planets + sweet line</p>
+            </article>
+            <article className="panel">
+              <h3>First Access</h3>
+              <p>Join the launch access list</p>
+            </article>
+          </div>
+        </section>
       </main>
-    </div>
+    </>
   );
 }
