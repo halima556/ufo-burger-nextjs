@@ -1,4 +1,36 @@
+"use client";
+
+import { useEffect } from "react";
+
 export default function Home() {
+  useEffect(() => {
+    const backToTopBtn = document.getElementById("back-to-top");
+
+    if (!backToTopBtn) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add("is-visible");
+      } else {
+        backToTopBtn.classList.remove("is-visible");
+      }
+    };
+
+    const handleClick = () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    backToTopBtn.addEventListener("click", handleClick);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      backToTopBtn.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <>
       <div className="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
