@@ -282,6 +282,24 @@ export default function Home() {
             </article>
           </div>
         </section>
+
+        <section id="crew" className="section">
+          <div className="section-head">
+            <p className="kicker">05</p>
+            <h2>Join the waitlist</h2>
+            <p className="section-subtitle">FIRST DROP. FIRST SIGNAL.</p>
+          </div>
+
+          <div className="grid two-col">
+            <article className="panel">
+              <h3>Launch Access List</h3>
+              <p>Get first access to launch day, menu drops, and limited offers.</p>
+              <p id="crew-count" className="crew-count" aria-live="polite">
+                No launch members have joined yet.
+              </p>
+            </article>
+          </div>
+        </section>
       </main>
     </>
   );
