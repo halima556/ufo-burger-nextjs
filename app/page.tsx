@@ -268,6 +268,20 @@ export default function Home() {
             </article>
           </div>
         </section>
+
+        <section id="inside" className="section inside-section">
+          <div className="section-head inside-head">
+            <p className="kicker">04</p>
+            <h2>Inside The Orbit</h2>
+            <p className="section-subtitle">THE CORE TEXTURE EXPERIENCE</p>
+          </div>
+          <div className="inside-grid">
+            <article className="inside-shot reveal-item" style={{ ["--reveal-delay" as any]: "0.03s" }}>
+              <img src="/assets/media/burgerinhalt.png" alt="Inside view of UFO burger composition" loading="lazy" />
+              <p className="inside-caption">Inside architecture with a premium core and cinematic depth.</p>
+            </article>
+          </div>
+        </section>
       </main>
     </>
   );
