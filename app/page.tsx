@@ -5,29 +5,125 @@ import { useEffect } from "react";
 export default function Home() {
   useEffect(() => {
     const backToTopBtn = document.getElementById("back-to-top");
+    const scrollProgress = document.getElementById("scroll-progress");
+    const modal = document.getElementById("investor-modal");
+    const modalCloseButtons = document.querySelectorAll("[data-close-investor-modal]");
+    const modalOpenButtons = document.querySelectorAll("[data-open-investor-modal]");
+    const menuFilterButtons = document.querySelectorAll<HTMLButtonElement>(".tab-btn[data-filter]");
+    const menuItems = document.querySelectorAll<HTMLElement>(".menu-grid .menu-item");
 
-    if (!backToTopBtn) return;
-
+    // ---------- Back to top + Scroll progress ----------
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        backToTopBtn.classList.add("is-visible");
-      } else {
-        backToTopBtn.classList.remove("is-visible");
+      // Back-to-top sichtbar machen
+      if (backToTopBtn) {
+        if (window.scrollY > 300) {
+          backToTopBtn.classList.add("is-visible");
+        } else {
+          backToTopBtn.classList.remove("is-visible");
+        }
+      }
+
+      // Scroll progress berechnen
+      if (scrollProgress) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        (scrollProgress as HTMLElement).style.width = `${progress}%`;
       }
     };
 
-    const handleClick = () => {
+    const handleBackToTopClick = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener("click", handleBackToTopClick);
+    }
     window.addEventListener("scroll", handleScroll);
-    backToTopBtn.addEventListener("click", handleClick);
-
     handleScroll();
 
+    // ---------- Investor modal ----------
+    const openModal = () => {
+      if (!modal) return;
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeModal = () => {
+      if (!modal) return;
+      modal.hidden = true;
+      document.body.style.overflow = "";
+    };
+
+    modalOpenButtons.forEach((btn) => {
+      btn.addEventListener("click", openModal);
+    });
+
+    modalCloseButtons.forEach((btn) => {
+      btn.addEventListener("click", closeModal);
+    });
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // ---------- Menu filter (All / Savory / Sweet) ----------
+    const applyFilter = (filter: string) => {
+      menuItems.forEach((item) => {
+        const isSavory = item.classList.contains("savory");
+        const isSweet = item.classList.contains("sweet");
+
+        let show = false;
+        if (filter === "all") show = true;
+        if (filter === "savory") show = isSavory;
+        if (filter === "sweet") show = isSweet;
+
+        item.style.display = show ? "" : "none";
+      });
+
+      menuFilterButtons.forEach((btn) => {
+        const isActive = btn.dataset.filter === filter;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    };
+
+    const filterHandlers: Array<{ btn: HTMLButtonElement; fn: () => void }> = [];
+
+    menuFilterButtons.forEach((btn) => {
+      const filter = btn.dataset.filter || "all";
+      const fn = () => applyFilter(filter);
+      btn.addEventListener("click", fn);
+      filterHandlers.push({ btn, fn });
+    });
+
+    // Default active
+    applyFilter("all");
+
+    // ---------- Cleanup ----------
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      backToTopBtn.removeEventListener("click", handleClick);
+      window.removeEventListener("keydown", handleKeyDown);
+
+      if (backToTopBtn) {
+        backToTopBtn.removeEventListener("click", handleBackToTopClick);
+      }
+
+      modalOpenButtons.forEach((btn) => {
+        btn.removeEventListener("click", openModal);
+      });
+
+      modalCloseButtons.forEach((btn) => {
+        btn.removeEventListener("click", closeModal);
+      });
+
+      filterHandlers.forEach(({ btn, fn }) => {
+        btn.removeEventListener("click", fn);
+      });
+
+      document.body.style.overflow = "";
     };
   }, []);
 
@@ -40,7 +136,9 @@ export default function Home() {
       </button>
 
       <header className="site-header">
-        <a href="#top" className="brand brand--glow">UFO BURGER</a>
+        <a href="#top" className="brand brand--glow">
+          UFO BURGER
+        </a>
       </header>
 
       <section className="hero" id="top">
@@ -55,14 +153,18 @@ export default function Home() {
           <p className="eyebrow">Since 1987 - Recipes from another orbit</p>
           <h1>Premium Closed Burgers from Distant Worlds</h1>
           <p>
-            Cosmic flavor, premium craft, and limited first access in Wallsend. Join early and be
-            first in line when the hatch opens.
+            Cosmic flavor, premium craft, and limited first access in Wallsend. Join early and be first in line
+            when the hatch opens.
           </p>
 
           <div className="hero-actions">
-            <a className="btn btn-primary" href="#crew">Join the waitlist</a>
-            <a className="btn btn-ghost" href="#menu">Explore the menu</a>
-            <button className="btn btn-subtle" type="button">
+            <a className="btn btn-primary" href="#crew">
+              Join the waitlist
+            </a>
+            <a className="btn btn-ghost" href="#menu">
+              Explore the menu
+            </a>
+            <button className="btn btn-subtle" type="button" data-open-investor-modal>
               For partners / investors
             </button>
           </div>
@@ -80,34 +182,32 @@ export default function Home() {
 
             <article className="legend-chapter reveal-item" style={{ ["--reveal-delay" as any]: "0.08s" }}>
               <p className="legend-lead legend-lead--plain">
-                <span className="legend-year">1987.</span> A streak of light cuts across Wallsend, then disappears before sunrise.
+                <span className="legend-year">1987.</span> A streak of light cuts across Wallsend, then disappears
+                before sunrise.
               </p>
               <p>
-                No crater. No wreckage. Only a scorched capsule and a coded menu blueprint no one
-                could decode.
+                No crater. No wreckage. Only a scorched capsule and a coded menu blueprint no one could decode.
               </p>
               <p>
-                Inside were signatures from distant systems, ingredients mapped to planets, and one
-                instruction stamped in red: &quot;Serve when Earth is ready.&quot;
+                Inside were signatures from distant systems, ingredients mapped to planets, and one instruction
+                stamped in red: &quot;Serve when Earth is ready.&quot;
               </p>
             </article>
 
             <article className="legend-chapter reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
               <h3>Hook + Cliffhanger</h3>
               <p className="section-subtitle">THE SIGNAL RETURNS</p>
-              <p className="legend-lead">
-                For years, the capsule stayed sealed. This season, it activated.
-              </p>
+              <p className="legend-lead">For years, the capsule stayed sealed. This season, it activated.</p>
               <p>
-                One by one, the planet formulas unlocked - Mercury, Venus, Mars, and beyond - each
-                profile built for craving, repeat visits, and pure word-of-mouth.
+                One by one, the planet formulas unlocked - Mercury, Venus, Mars, and beyond - each profile built for
+                craving, repeat visits, and pure word-of-mouth.
               </p>
               <blockquote className="legend-quote">
                 The final protocol is still encrypted. It only opens after first contact with the Crew.
               </blockquote>
               <p>
-                First contact starts here: join the Crew, unlock the transmission, and take your place
-                in the first launch line.
+                First contact starts here: join the Crew, unlock the transmission, and take your place in the first
+                launch line.
               </p>
             </article>
           </div>
@@ -119,6 +219,7 @@ export default function Home() {
             <h2>Why UFO Burger</h2>
             <p className="section-subtitle">BIG FLAVOR. CLEAR CHOICE.</p>
           </div>
+
           <div className="grid two-col">
             <article className="panel">
               <h3>Planet Recipes</h3>
@@ -129,6 +230,7 @@ export default function Home() {
                 <li>Distinct taste profiles you can remember</li>
               </ul>
             </article>
+
             <article className="panel">
               <h3>Fast &amp; Satisfying</h3>
               <ul>
@@ -138,6 +240,7 @@ export default function Home() {
               </ul>
             </article>
           </div>
+
           <div className="grid four-col project-facts">
             <article className="panel">
               <h3>Opening Soon</h3>
@@ -166,9 +269,15 @@ export default function Home() {
           </div>
 
           <div className="menu-switch" aria-label="Menu categories">
-            <button className="tab-btn" type="button">All</button>
-            <button className="tab-btn" type="button">Savory Burgers</button>
-            <button className="tab-btn" type="button">Sweet Line</button>
+            <button className="tab-btn" type="button" data-filter="all" aria-pressed="true">
+              All
+            </button>
+            <button className="tab-btn" type="button" data-filter="savory" aria-pressed="false">
+              Savory Burgers
+            </button>
+            <button className="tab-btn" type="button" data-filter="sweet" aria-pressed="false">
+              Sweet Line
+            </button>
           </div>
 
           <div className="menu-grid">
@@ -376,7 +485,9 @@ export default function Home() {
               ></textarea>
 
               <div className="form-actions">
-                <button className="btn btn-primary" type="submit">Join the waitlist</button>
+                <button className="btn btn-primary" type="submit">
+                  Join the waitlist
+                </button>
               </div>
 
               <p className="form-note">We will send your first launch signal and opening updates.</p>
@@ -421,7 +532,7 @@ export default function Home() {
               <h3>Direct Contact</h3>
               <p>Share details and intent. We continue directly on WhatsApp.</p>
               <div className="form-actions">
-                <button className="btn btn-ghost" type="button">
+                <button className="btn btn-ghost" type="button" data-open-investor-modal>
                   Contact on WhatsApp
                 </button>
               </div>
@@ -435,16 +546,18 @@ export default function Home() {
       </footer>
 
       <div className="investor-modal" id="investor-modal" hidden>
-        <div className="investor-modal__overlay"></div>
+        <div className="investor-modal__overlay" data-close-investor-modal></div>
+
         <section
           className="investor-modal__dialog panel"
           role="dialog"
           aria-modal="true"
           aria-labelledby="investor-modal-title"
         >
-          <button className="investor-modal__close" type="button">
+          <button className="investor-modal__close" type="button" data-close-investor-modal>
             Close
           </button>
+
           <h2 id="investor-modal-title">Investor Contact</h2>
           <p className="section-subtitle">SEND YOUR DETAILS TO WHATSAPP</p>
 
@@ -511,7 +624,9 @@ export default function Home() {
             ></textarea>
 
             <div className="form-actions">
-              <button className="btn btn-primary" type="submit">Send via WhatsApp</button>
+              <button className="btn btn-primary" type="submit">
+                Send via WhatsApp
+              </button>
             </div>
 
             <p className="form-note">Your details will be prepared in WhatsApp before sending.</p>
