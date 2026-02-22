@@ -152,6 +152,26 @@ export default function Home() {
                 <p className="menu-detail">Beef, jalapeno, chili sauce, lime, smoked paprika.</p>
               </div>
             </article>
+
+            <article className="menu-item menu-feature savory reveal-item" style={{ ["--reveal-delay" as any]: "0.04s" }}>
+              <img src="/assets/media/venus.png" alt="Venus Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Venus</h3>
+                <p className="tag">Creamy, soft, stretchy</p>
+                <p className="menu-detail">Chicken, melted cheese, cream sauce, a hint of honey.</p>
+              </div>
+            </article>
+
+            <article className="menu-item menu-feature savory reveal-item" style={{ ["--reveal-delay" as any]: "0.06s" }}>
+              <img src="/assets/media/mars.png" alt="Mars Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Mars</h3>
+                <p className="tag">Spicy, smoky, meaty</p>
+                <p className="menu-detail">Lamb, roasted pepper, paprika, yogurt-garlic sauce.</p>
+              </div>
+            </article>
           </div>
         </section>
       </main>
