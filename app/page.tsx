@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 
 type LeadType = "Customer" | "Investor" | "Partner" | "Other";
 
@@ -16,6 +16,8 @@ type WaitlistEntry = {
 const WAITLIST_STORAGE_KEY = "ufoBurgerWaitlist";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 const leadTypeOptions = new Set<LeadType>(["Customer", "Investor", "Partner", "Other"]);
+type RevealDelayStyle = CSSProperties & Record<"--reveal-delay", string>;
+const withRevealDelay = (delay: string): RevealDelayStyle => ({ "--reveal-delay": delay });
 
 export default function Home() {
   useEffect(() => {
@@ -664,13 +666,13 @@ export default function Home() {
       <main>
         <section id="legend" className="legend-epic">
           <div className="legend-epic__inner">
-            <div className="legend-head reveal-item" style={{ ["--reveal-delay" as any]: "0.02s" }}>
+            <div className="legend-head reveal-item" style={withRevealDelay("0.02s")}>
               <p className="kicker">01</p>
               <h2>The Legend</h2>
               <p className="section-subtitle">HOW IT ALL BEGAN</p>
             </div>
 
-            <article className="legend-chapter reveal-item" style={{ ["--reveal-delay" as any]: "0.08s" }}>
+            <article className="legend-chapter reveal-item" style={withRevealDelay("0.08s")}>
               <p className="legend-lead legend-lead--plain">
                 <span className="legend-year">1987.</span> A streak of light cuts across Wallsend, then disappears
                 before sunrise.
@@ -682,7 +684,7 @@ export default function Home() {
               </p>
             </article>
 
-            <article className="legend-chapter reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
+            <article className="legend-chapter reveal-item" style={withRevealDelay("0.14s")}>
               <h3>Hook + Cliffhanger</h3>
               <p className="section-subtitle">THE SIGNAL RETURNS</p>
               <p className="legend-lead">For years, the capsule stayed sealed. This season, it activated.</p>
@@ -709,7 +711,7 @@ export default function Home() {
           </div>
 
           <div className="grid two-col">
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.03s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.03s")}>
               <h3>Planet Recipes</h3>
               <p>Every burger has its own planet profile, texture, and flavor identity.</p>
               <ul>
@@ -719,7 +721,7 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.08s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.08s")}>
               <h3>Fast &amp; Satisfying</h3>
               <ul>
                 <li>Made for quick pick-up and easy repeat orders</li>
@@ -730,19 +732,19 @@ export default function Home() {
           </div>
 
           <div className="grid four-col project-facts">
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.11s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.11s")}>
               <h3>Opening Soon</h3>
               <p>First launch in Wallsend</p>
             </article>
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.14s")}>
               <h3>Location</h3>
               <p>Wallsend</p>
             </article>
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.17s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.17s")}>
               <h3>Signature Line</h3>
               <p>Savory planets + sweet line</p>
             </article>
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.2s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.2s")}>
               <h3>First Access</h3>
               <p>Join the launch access list</p>
             </article>
@@ -771,7 +773,7 @@ export default function Home() {
           <div className="menu-grid">
             <article
               className="menu-item menu-feature menu-feature--mercury savory reveal-item"
-              style={{ ["--reveal-delay" as any]: "0.02s" }}
+              style={withRevealDelay("0.02s")}
             >
               <img src="/assets/media/mercury2.PNG" alt="Mercury Burger" loading="lazy" />
               <div className="menu-copy">
@@ -782,7 +784,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item menu-feature savory reveal-item" style={{ ["--reveal-delay" as any]: "0.04s" }}>
+            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.04s")}>
               <img src="/assets/media/venus.png" alt="Venus Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
@@ -792,7 +794,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item menu-feature savory reveal-item" style={{ ["--reveal-delay" as any]: "0.06s" }}>
+            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.06s")}>
               <img src="/assets/media/mars.png" alt="Mars Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
@@ -804,7 +806,7 @@ export default function Home() {
 
             <article
               className="menu-item menu-feature menu-feature--saturn savory reveal-item"
-              style={{ ["--reveal-delay" as any]: "0.08s" }}
+              style={withRevealDelay("0.08s")}
             >
               <img src="/assets/media/saturn.png" alt="Saturn Burger" loading="lazy" />
               <div className="menu-copy">
@@ -817,7 +819,7 @@ export default function Home() {
 
             <article
               className="menu-item menu-feature menu-feature--neptune savory reveal-item"
-              style={{ ["--reveal-delay" as any]: "0.1s" }}
+              style={withRevealDelay("0.1s")}
             >
               <img src="/assets/media/neptune.png" alt="Neptune Burger" loading="lazy" />
               <div className="menu-copy">
@@ -831,7 +833,7 @@ export default function Home() {
             <article
               className="menu-item menu-feature menu-feature--pluto savory reveal-item"
               data-planet="pluto"
-              style={{ ["--reveal-delay" as any]: "0.12s" }}
+              style={withRevealDelay("0.12s")}
             >
               <img src="/assets/media/pluto.png" alt="Pluto Burger" loading="lazy" />
               <div className="menu-copy">
@@ -842,7 +844,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item menu-feature savory reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
+            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.14s")}>
               <img src="/assets/media/sirius1.png" alt="Sirius Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
@@ -852,7 +854,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.16s" }}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.16s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Aurora</h3>
@@ -861,7 +863,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.18s" }}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.18s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Ice Comet</h3>
@@ -870,7 +872,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.2s" }}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.2s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Dark Matter</h3>
@@ -879,7 +881,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.22s" }}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.22s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Luna</h3>
@@ -888,7 +890,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={{ ["--reveal-delay" as any]: "0.24s" }}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.24s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Cosmic Cloud</h3>
@@ -906,7 +908,7 @@ export default function Home() {
             <p className="section-subtitle">THE CORE TEXTURE EXPERIENCE</p>
           </div>
           <div className="inside-grid">
-            <article className="inside-shot reveal-item" style={{ ["--reveal-delay" as any]: "0.03s" }}>
+            <article className="inside-shot reveal-item" style={withRevealDelay("0.03s")}>
               <img src="/assets/media/burgerinhalt.png" alt="Inside view of UFO burger composition" loading="lazy" />
               <p className="inside-caption">Inside architecture with a premium core and cinematic depth.</p>
             </article>
@@ -921,7 +923,7 @@ export default function Home() {
           </div>
 
           <div className="grid two-col">
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.04s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.04s")}>
               <h3>Launch Access List</h3>
               <p>Get first access to launch day, menu drops, and limited offers.</p>
               <p id="crew-count" className="crew-count" aria-live="polite">
@@ -929,7 +931,7 @@ export default function Home() {
               </p>
             </article>
 
-            <form className="panel crew-form reveal-item" id="crew-form" style={{ ["--reveal-delay" as any]: "0.09s" }}>
+            <form className="panel crew-form reveal-item" id="crew-form" style={withRevealDelay("0.09s")}>
               <label htmlFor="name">YOUR NAME</label>
               <input
                 id="name"
@@ -993,7 +995,7 @@ export default function Home() {
           </div>
 
           <div className="grid four-col">
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.03s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.03s")}>
               <h3>Brand Signal</h3>
               <p>One world. One story. One instantly recognizable format.</p>
               <ul>
@@ -1003,7 +1005,7 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.07s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.07s")}>
               <h3>Demand Engine</h3>
               <ul>
                 <li>Primary CTA: Join the waitlist</li>
@@ -1012,12 +1014,12 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.11s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.11s")}>
               <h3>Reality Check</h3>
               <p>Opening: Soon. Location details: TBD. Prices: TBD.</p>
             </article>
 
-            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.15s" }}>
+            <article className="panel reveal-item" style={withRevealDelay("0.15s")}>
               <h3>Direct Contact</h3>
               <p>Share details and intent. We continue directly on WhatsApp.</p>
               <div className="form-actions">

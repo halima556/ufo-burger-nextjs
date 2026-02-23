@@ -464,17 +464,17 @@ img {
   z-index: 1;
   background:
     radial-gradient(
-      ellipse 28% 18% at 86% 89%,
-      rgba(0, 0, 0, 0.62) 0%,
-      rgba(0, 0, 0, 0.34) 45%,
-      rgba(0, 0, 0, 0) 78%
+      ellipse 34% 22% at 86% 89%,
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.6) 45%,
+      rgba(0, 0, 0, 0) 82%
     ),
     radial-gradient(
-      ellipse 22% 14% at 82% 86%,
-      rgba(0, 0, 0, 0.42) 0%,
+      ellipse 27% 18% at 82% 86%,
+      rgba(0, 0, 0, 0.6) 0%,
       rgba(0, 0, 0, 0) 74%
     );
-  filter: blur(1px);
+  filter: blur(2px);
 }
 
 .hero-media::after {
@@ -1988,14 +1988,14 @@ body.is-nav-open {
   .hero-media::before {
     background:
       radial-gradient(
-        ellipse 36% 22% at 84% 90%,
-        rgba(0, 0, 0, 0.68) 0%,
-        rgba(0, 0, 0, 0.38) 48%,
+        ellipse 40% 26% at 84% 90%,
+        rgba(0, 0, 0, 0.82) 0%,
+        rgba(0, 0, 0, 0.52) 48%,
         rgba(0, 0, 0, 0) 80%
       ),
       radial-gradient(
-        ellipse 26% 16% at 80% 87%,
-        rgba(0, 0, 0, 0.46) 0%,
+        ellipse 30% 20% at 80% 87%,
+        rgba(0, 0, 0, 0.64) 0%,
         rgba(0, 0, 0, 0) 76%
       );
   }
