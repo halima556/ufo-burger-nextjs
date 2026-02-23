@@ -26,8 +26,15 @@ export default function Home() {
     const modalCloseButtons = document.querySelectorAll<HTMLElement>("[data-close-investor-modal]");
     const modalOpenButtons = document.querySelectorAll<HTMLElement>("[data-open-investor-modal]");
 
+    const navToggle = document.getElementById("nav-toggle") as HTMLButtonElement | null;
+    const navDrawer = document.getElementById("main-nav-drawer") as HTMLElement | null;
+    const navBackdrop = document.getElementById("nav-backdrop") as HTMLButtonElement | null;
+    const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".main-nav a"));
+    const sceneSections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+
     const menuFilterButtons = document.querySelectorAll<HTMLButtonElement>(".tab-btn[data-filter]");
     const menuItems = document.querySelectorAll<HTMLElement>(".menu-grid .menu-item");
+    const menuFeatures = Array.from(document.querySelectorAll<HTMLElement>(".menu-feature"));
 
     const crewForm = document.getElementById("crew-form") as HTMLFormElement | null;
     const formStatus = document.getElementById("form-status") as HTMLElement | null;
@@ -37,6 +44,9 @@ export default function Home() {
     const investorForm = document.getElementById("investor-form") as HTMLFormElement | null;
     const investorFormStatus = document.getElementById("investor-form-status") as HTMLElement | null;
     const investorPrimaryInput = document.getElementById("investor-name") as HTMLInputElement | null;
+
+    const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".reveal-item"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const bodyWhatsAppRaw = String(document.body.dataset.investorWhatsapp || "").trim();
     const investorWhatsAppNumber = bodyWhatsAppRaw.replace(/\D/g, "");
@@ -116,23 +126,16 @@ export default function Home() {
       if (!investorWhatsAppNumber || bodyWhatsAppRaw === "REPLACE_WITH_REAL_NUMBER") {
         return false;
       }
-
       const waUrl = `https://wa.me/${investorWhatsAppNumber}?text=${encodeURIComponent(messageText)}`;
       const popup = window.open(waUrl, "_blank", "noopener,noreferrer");
-      if (!popup) {
-        window.location.href = waUrl;
-      }
+      if (!popup) window.location.href = waUrl;
       return true;
     };
 
-    // ---------- Back to top + Scroll progress ----------
+    // ---------- Scroll progress + top button ----------
     const handleScroll = () => {
       if (backToTopBtn) {
-        if (window.scrollY > 300) {
-          backToTopBtn.classList.add("is-visible");
-        } else {
-          backToTopBtn.classList.remove("is-visible");
-        }
+        backToTopBtn.classList.toggle("is-visible", window.scrollY > 300);
       }
 
       if (scrollProgress) {
@@ -146,19 +149,17 @@ export default function Home() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    if (backToTopBtn) {
-      backToTopBtn.addEventListener("click", handleBackToTopClick);
-    }
+    backToTopBtn?.addEventListener("click", handleBackToTopClick);
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
     handleScroll();
 
-    // ---------- Investor modal ----------
+    // ---------- Modal ----------
     const openModal = () => {
       if (!modal) return;
       modal.hidden = false;
       document.body.classList.add("is-modal-open");
-      if (investorPrimaryInput) investorPrimaryInput.focus();
+      investorPrimaryInput?.focus();
     };
 
     const closeModal = () => {
@@ -170,19 +171,179 @@ export default function Home() {
     modalOpenButtons.forEach((btn) => btn.addEventListener("click", openModal));
     modalCloseButtons.forEach((btn) => btn.addEventListener("click", closeModal));
 
-    // ---------- Menu filter (All / Savory / Sweet) ----------
+    // ---------- Nav Drawer ----------
+    const openNavMenu = () => {
+      if (!navToggle || !navDrawer || !navBackdrop) return;
+      navDrawer.hidden = false;
+      navBackdrop.hidden = false;
+      navDrawer.classList.add("is-open");
+      navBackdrop.classList.add("is-open");
+      navToggle.classList.add("is-open");
+      navToggle.setAttribute("aria-expanded", "true");
+      navToggle.setAttribute("aria-label", "Close main menu");
+      document.body.classList.add("is-nav-open");
+    };
+
+    const closeNavMenu = () => {
+      if (!navToggle || !navDrawer || !navBackdrop) return;
+      navDrawer.hidden = true;
+      navBackdrop.hidden = true;
+      navDrawer.classList.remove("is-open");
+      navBackdrop.classList.remove("is-open");
+      navToggle.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open main menu");
+      document.body.classList.remove("is-nav-open");
+    };
+
+    const handleNavToggleClick = () => {
+      if (!navToggle) return;
+      const isOpen = navToggle.classList.contains("is-open");
+      if (isOpen) closeNavMenu();
+      else openNavMenu();
+    };
+
+    navToggle?.addEventListener("click", handleNavToggleClick);
+    navBackdrop?.addEventListener("click", closeNavMenu);
+    navLinks.forEach((link) => link.addEventListener("click", closeNavMenu));
+
+    // ---------- Active nav highlight ----------
+    const highlightNavLinkById = (activeId: string) => {
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        const isCurrent = href === `#${activeId}`;
+        link.classList.toggle("is-current", isCurrent);
+        link.setAttribute("aria-current", isCurrent ? "true" : "false");
+      });
+    };
+
+    let sectionObserver: IntersectionObserver | null = null;
+    if (navLinks.length && sceneSections.length) {
+      const sectionsById = new Map<string, HTMLElement>();
+      sceneSections.forEach((section) => sectionsById.set(section.id, section));
+
+      sectionObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+          if (visible.length > 0) {
+            highlightNavLinkById((visible[0].target as HTMLElement).id);
+          }
+        },
+        { threshold: [0.2, 0.45, 0.7], rootMargin: "-28% 0px -50% 0px" }
+      );
+
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        const id = href.startsWith("#") ? href.slice(1) : "";
+        const section = sectionsById.get(id);
+        if (section) sectionObserver?.observe(section);
+      });
+
+      const hashId = window.location.hash.replace("#", "");
+      if (sectionsById.has(hashId)) highlightNavLinkById(hashId);
+      else highlightNavLinkById("legend");
+    }
+
+    // ---------- Reveal motion ----------
+    let revealObserver: IntersectionObserver | null = null;
+
+    if (revealItems.length) {
+      if (prefersReducedMotion) {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      } else {
+        document.body.classList.add("reveal-ready");
+
+        revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                (entry.target as HTMLElement).classList.add("is-visible");
+                revealObserver?.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.22, rootMargin: "0px 0px -8% 0px" }
+        );
+
+        revealItems.forEach((item) => revealObserver?.observe(item));
+      }
+    }
+
+    // ---------- Menu ingredient toggle ----------
+    const setMenuIngredientOpen = (item: HTMLElement, open: boolean) => {
+      item.classList.toggle("is-open", open);
+      item.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+
+    const closeAllMenuIngredients = (exceptItem: HTMLElement | null = null) => {
+      menuFeatures.forEach((item) => {
+        if (item === exceptItem) return;
+        setMenuIngredientOpen(item, false);
+      });
+    };
+
+    const menuFeatureClickHandlers = new Map<HTMLElement, (e: Event) => void>();
+    const menuFeatureKeyHandlers = new Map<HTMLElement, (e: KeyboardEvent) => void>();
+
+    menuFeatures.forEach((item) => {
+      const detail = item.querySelector(".menu-detail");
+      if (!detail) return;
+
+      const burgerName = item.querySelector("h3")?.textContent?.trim() || "Burger";
+      item.setAttribute("role", "button");
+      item.setAttribute("tabindex", "0");
+      item.setAttribute("aria-expanded", "false");
+      item.setAttribute("aria-label", `${burgerName} ingredients`);
+
+      const toggleOpen = () => {
+        const nextState = !item.classList.contains("is-open");
+        closeAllMenuIngredients(item);
+        setMenuIngredientOpen(item, nextState);
+      };
+
+      const clickHandler = (event: Event) => {
+        // if user clicks on link/button inside someday, ignore
+        const target = event.target as HTMLElement | null;
+        if (target && target.closest("button,a,input,textarea,select")) return;
+        toggleOpen();
+      };
+
+      const keyHandler = (event: KeyboardEvent) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        toggleOpen();
+      };
+
+      item.addEventListener("click", clickHandler);
+      item.addEventListener("keydown", keyHandler);
+      menuFeatureClickHandlers.set(item, clickHandler);
+      menuFeatureKeyHandlers.set(item, keyHandler);
+    });
+
+    // close ingredients on scroll (small debounce)
+    let closeIngredientsOnScrollTimer = 0;
+    const handleCloseIngredientsOnScroll = () => {
+      window.clearTimeout(closeIngredientsOnScrollTimer);
+      closeIngredientsOnScrollTimer = window.setTimeout(() => {
+        closeAllMenuIngredients();
+      }, 80);
+    };
+    window.addEventListener("scroll", handleCloseIngredientsOnScroll, { passive: true });
+
+    // ---------- Menu filter ----------
     const applyFilter = (filter: string) => {
       menuItems.forEach((item) => {
-        const isSavory = item.classList.contains("savory");
-        const isSweet = item.classList.contains("sweet");
+        const visible = filter === "all" || item.classList.contains(filter);
+        item.classList.toggle("is-hidden", !visible);
+        item.setAttribute("aria-hidden", visible ? "false" : "true");
 
-        let show = false;
-        if (filter === "all") show = true;
-        if (filter === "savory") show = isSavory;
-        if (filter === "sweet") show = isSweet;
-
-        item.style.display = show ? "" : "none";
-        item.setAttribute("aria-hidden", show ? "false" : "true");
+        // close ingredient pill if hidden
+        if (!visible && item.classList.contains("menu-feature")) {
+          setMenuIngredientOpen(item as HTMLElement, false);
+        }
       });
 
       menuFilterButtons.forEach((btn) => {
@@ -205,9 +366,7 @@ export default function Home() {
     const handleCrewCountClick = () => {
       if (!crewForm) return;
       crewForm.scrollIntoView({ behavior: "smooth", block: "center" });
-      window.setTimeout(() => {
-        crewNameInput?.focus();
-      }, 220);
+      window.setTimeout(() => crewNameInput?.focus(), 220);
     };
 
     const handleCrewCountKeyDown = (event: KeyboardEvent) => {
@@ -224,7 +383,7 @@ export default function Home() {
       crewCount.addEventListener("keydown", handleCrewCountKeyDown);
     }
 
-    // ---------- Waitlist form submit ----------
+    // ---------- Waitlist form ----------
     const handleCrewSubmit = (event: Event) => {
       event.preventDefault();
       if (!crewForm) return;
@@ -241,12 +400,10 @@ export default function Home() {
         setStatus("Please enter a valid name (at least 2 characters).", "error");
         return;
       }
-
       if (!emailPattern.test(email)) {
         setStatus("Please enter a valid email address.", "error");
         return;
       }
-
       if (phoneDigits.length < 6) {
         setStatus("Please enter a valid phone/WhatsApp number.", "error");
         return;
@@ -303,7 +460,7 @@ export default function Home() {
       updateCrewCount();
     }
 
-    // ---------- Investor form submit ----------
+    // ---------- Investor form ----------
     const handleInvestorSubmit = (event: Event) => {
       event.preventDefault();
       if (!investorForm) return;
@@ -321,17 +478,14 @@ export default function Home() {
         setInvestorStatus("Please enter a valid name (at least 2 characters).", "error");
         return;
       }
-
       if (!emailPattern.test(email)) {
         setInvestorStatus("Please enter a valid email address.", "error");
         return;
       }
-
       if (!leadTypeOptions.has(leadType as LeadType)) {
         setInvestorStatus("Please select a valid lead type.", "error");
         return;
       }
-
       if (phoneDigits.length < 6) {
         setInvestorStatus("Please enter a valid phone/WhatsApp number.", "error");
         return;
@@ -357,11 +511,9 @@ export default function Home() {
       window.setTimeout(() => closeModal(), 500);
     };
 
-    if (investorForm) {
-      investorForm.addEventListener("submit", handleInvestorSubmit);
-    }
+    investorForm?.addEventListener("submit", handleInvestorSubmit);
 
-    // ---------- Pluto image fallback ----------
+    // ---------- Pluto fallback ----------
     const plutoImage = document.querySelector<HTMLImageElement>('[data-planet="pluto"] img');
     const plutoCandidates = ["/assets/media/pluto.png", "/assets/media/earth.png", "/assets/media/jupiter.png"];
     let plutoIndex = Math.max(plutoCandidates.indexOf(plutoImage?.getAttribute("src") || ""), 0);
@@ -374,14 +526,13 @@ export default function Home() {
       plutoImage.src = plutoCandidates[plutoIndex];
     };
 
-    if (plutoImage) {
-      plutoImage.addEventListener("error", handlePlutoError);
-    }
+    plutoImage?.addEventListener("error", handlePlutoError);
 
     // ---------- ESC key ----------
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        closeModal();
+        if (navToggle?.classList.contains("is-open")) closeNavMenu();
+        if (modal && !modal.hidden) closeModal();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -390,62 +541,96 @@ export default function Home() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", handleCloseIngredientsOnScroll);
       window.removeEventListener("keydown", handleKeyDown);
+      window.clearTimeout(closeIngredientsOnScrollTimer);
 
-      if (backToTopBtn) {
-        backToTopBtn.removeEventListener("click", handleBackToTopClick);
-      }
+      backToTopBtn?.removeEventListener("click", handleBackToTopClick);
 
       modalOpenButtons.forEach((btn) => btn.removeEventListener("click", openModal));
       modalCloseButtons.forEach((btn) => btn.removeEventListener("click", closeModal));
 
-      filterHandlers.forEach(({ btn, fn }) => {
-        btn.removeEventListener("click", fn);
-      });
+      navToggle?.removeEventListener("click", handleNavToggleClick);
+      navBackdrop?.removeEventListener("click", closeNavMenu);
+      navLinks.forEach((link) => link.removeEventListener("click", closeNavMenu));
 
-      if (crewForm) {
-        crewForm.removeEventListener("submit", handleCrewSubmit);
-      }
+      filterHandlers.forEach(({ btn, fn }) => btn.removeEventListener("click", fn));
 
-      if (investorForm) {
-        investorForm.removeEventListener("submit", handleInvestorSubmit);
-      }
+      if (crewForm) crewForm.removeEventListener("submit", handleCrewSubmit);
+      if (investorForm) investorForm.removeEventListener("submit", handleInvestorSubmit);
 
       if (crewCount) {
         crewCount.removeEventListener("click", handleCrewCountClick);
         crewCount.removeEventListener("keydown", handleCrewCountKeyDown);
       }
 
-      if (plutoImage) {
-        plutoImage.removeEventListener("error", handlePlutoError);
-      }
+      menuFeatures.forEach((item) => {
+        const clickHandler = menuFeatureClickHandlers.get(item);
+        const keyHandler = menuFeatureKeyHandlers.get(item);
+        if (clickHandler) item.removeEventListener("click", clickHandler);
+        if (keyHandler) item.removeEventListener("keydown", keyHandler);
+      });
 
-      document.body.classList.remove("is-modal-open");
+      plutoImage?.removeEventListener("error", handlePlutoError);
+
+      revealObserver?.disconnect();
+      sectionObserver?.disconnect();
+
+      document.body.classList.remove("is-modal-open", "is-nav-open", "reveal-ready");
     };
   }, []);
 
   return (
     <>
-      <div
-        className="scroll-progress"
-        id="scroll-progress"
-        aria-hidden="true"
-      ></div>
+      <BodyWhatsappDataSetter value="+447961880693" />
+
+      <div className="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+      <div className="floating-investor-cta">
+        <button className="btn btn-primary" type="button" data-open-investor-modal>
+          Investor Priority Line
+        </button>
+      </div>
 
       <button className="back-to-top" id="back-to-top" type="button" aria-label="Back to top">
         ↑ Top
       </button>
 
-      {/* Wichtig für WhatsApp-Logik */}
-      <div hidden data-investor-whatsapp="+447961880693" />
-      {/* Wir setzen das echte Data-Attribut auf body per Script unten */}
-      <BodyWhatsappDataSetter value="+447961880693" />
+      <div className="starfield" aria-hidden="true"></div>
+      <div className="shooting-stars" id="shooting-stars" aria-hidden="true"></div>
+      <div className="ambient-orb orb-one" aria-hidden="true"></div>
+      <div className="ambient-orb orb-two" aria-hidden="true"></div>
+      <div className="ambient-orb orb-three" aria-hidden="true"></div>
 
       <header className="site-header">
         <a href="#top" className="brand brand--glow">
           UFO BURGER
         </a>
+
+        <button
+          className="nav-toggle"
+          id="nav-toggle"
+          type="button"
+          aria-label="Open main menu"
+          aria-controls="main-nav-drawer"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div className="main-nav-drawer" id="main-nav-drawer" hidden>
+          <nav className="main-nav" aria-label="Main navigation">
+            <a href="#legend">Legend</a>
+            <a href="#menu">Galaxy Menu</a>
+            <a href="#crew">Crew</a>
+            <a href="#business">Investors</a>
+          </nav>
+        </div>
       </header>
+
+      <button className="nav-backdrop" id="nav-backdrop" type="button" aria-label="Close main menu" hidden></button>
 
       <section className="hero" id="top">
         <div className="hero-media">
@@ -462,7 +647,6 @@ export default function Home() {
             Cosmic flavor, premium craft, and limited first access in Wallsend. Join early and be first in line when
             the hatch opens.
           </p>
-
           <div className="hero-actions">
             <a className="btn btn-primary" href="#crew">
               Join the waitlist
@@ -525,7 +709,7 @@ export default function Home() {
           </div>
 
           <div className="grid two-col">
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.03s" }}>
               <h3>Planet Recipes</h3>
               <p>Every burger has its own planet profile, texture, and flavor identity.</p>
               <ul>
@@ -535,7 +719,7 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.08s" }}>
               <h3>Fast &amp; Satisfying</h3>
               <ul>
                 <li>Made for quick pick-up and easy repeat orders</li>
@@ -546,19 +730,19 @@ export default function Home() {
           </div>
 
           <div className="grid four-col project-facts">
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.11s" }}>
               <h3>Opening Soon</h3>
               <p>First launch in Wallsend</p>
             </article>
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.14s" }}>
               <h3>Location</h3>
               <p>Wallsend</p>
             </article>
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.17s" }}>
               <h3>Signature Line</h3>
               <p>Savory planets + sweet line</p>
             </article>
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.2s" }}>
               <h3>First Access</h3>
               <p>Join the launch access list</p>
             </article>
@@ -737,7 +921,7 @@ export default function Home() {
           </div>
 
           <div className="grid two-col">
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.04s" }}>
               <h3>Launch Access List</h3>
               <p>Get first access to launch day, menu drops, and limited offers.</p>
               <p id="crew-count" className="crew-count" aria-live="polite">
@@ -745,7 +929,7 @@ export default function Home() {
               </p>
             </article>
 
-            <form className="panel crew-form" id="crew-form">
+            <form className="panel crew-form reveal-item" id="crew-form" style={{ ["--reveal-delay" as any]: "0.09s" }}>
               <label htmlFor="name">YOUR NAME</label>
               <input
                 id="name"
@@ -809,7 +993,7 @@ export default function Home() {
           </div>
 
           <div className="grid four-col">
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.03s" }}>
               <h3>Brand Signal</h3>
               <p>One world. One story. One instantly recognizable format.</p>
               <ul>
@@ -819,7 +1003,7 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.07s" }}>
               <h3>Demand Engine</h3>
               <ul>
                 <li>Primary CTA: Join the waitlist</li>
@@ -828,12 +1012,12 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.11s" }}>
               <h3>Reality Check</h3>
               <p>Opening: Soon. Location details: TBD. Prices: TBD.</p>
             </article>
 
-            <article className="panel">
+            <article className="panel reveal-item" style={{ ["--reveal-delay" as any]: "0.15s" }}>
               <h3>Direct Contact</h3>
               <p>Share details and intent. We continue directly on WhatsApp.</p>
               <div className="form-actions">
