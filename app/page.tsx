@@ -726,7 +726,7 @@ export default function Home() {
               <h3>Fast &amp; Satisfying</h3>
               <ul>
                 <li>Made for quick pick-up and easy repeat orders</li>
-                <li>Balanced savory menu plus sweet line</li>
+                <li>Balanced savory menu, sweet line, and crew-crafted drinks</li>
                 <li>Crafted for strong flavor without heavy feel</li>
               </ul>
             </article>
@@ -743,7 +743,7 @@ export default function Home() {
             </article>
             <article className="panel reveal-item" style={withRevealDelay("0.17s")}>
               <h3>Signature Line</h3>
-              <p>Savory planets + sweet line</p>
+              <p>Planet burgers, sweet line, and Deep Space drinks</p>
             </article>
             <article className="panel reveal-item" style={withRevealDelay("0.2s")}>
               <h3>First Access</h3>
@@ -768,6 +768,9 @@ export default function Home() {
             </button>
             <button className="tab-btn" type="button" data-filter="sweet" aria-pressed="false">
               Sweet Line
+            </button>
+            <button className="tab-btn" type="button" data-filter="drinks" aria-pressed="false">
+              Drinks
             </button>
           </div>
 
@@ -917,6 +920,61 @@ export default function Home() {
                 <h3>Cosmic Cloud</h3>
                 <p className="tag">Airy, vanilla</p>
                 <p className="menu-detail">Whipped cream, meringue, vanilla.</p>
+              </div>
+            </article>
+
+            <article className="menu-item drink-item drinks reveal-item" style={withRevealDelay("0.3s")}>
+              <div className="menu-copy">
+                <p className="menu-type">Deep Space - Essential Five</p>
+                <h3>Andromeda Elixir</h3>
+                <p className="tag">Crew Crafted</p>
+                <p className="menu-detail">
+                  A deep violet berry drink lifted with fresh lime and a light cosmic sparkle.
+                </p>
+              </div>
+            </article>
+
+            <article className="menu-item drink-item drinks reveal-item" style={withRevealDelay("0.32s")}>
+              <div className="menu-copy">
+                <p className="menu-type">Deep Space - Essential Five</p>
+                <h3>Orion Pulse</h3>
+                <p className="tag">Blue citrus, mint, crushed ice</p>
+                <p className="menu-detail">
+                  Bright blue citrus with cool mint and crushed ice - sharp, clean and refreshing.
+                </p>
+              </div>
+            </article>
+
+            <article className="menu-item drink-item drinks reveal-item" style={withRevealDelay("0.34s")}>
+              <div className="menu-copy">
+                <p className="menu-type">Deep Space - Essential Five</p>
+                <h3>Event Horizon</h3>
+                <p className="tag">Black lime, ginger, bold</p>
+                <p className="menu-detail">
+                  A smooth black lime and ginger blend with a bold, slightly spicy finish.
+                </p>
+              </div>
+            </article>
+
+            <article className="menu-item drink-item drinks reveal-item" style={withRevealDelay("0.36s")}>
+              <div className="menu-copy">
+                <p className="menu-type">Deep Space - Essential Five</p>
+                <h3>Dark Matter</h3>
+                <p className="tag">Blackberry, blackcurrant, rich</p>
+                <p className="menu-detail">
+                  Blackberry and blackcurrant combined for a rich, dark and full-bodied flavour.
+                </p>
+              </div>
+            </article>
+
+            <article className="menu-item drink-item drinks reveal-item" style={withRevealDelay("0.38s")}>
+              <div className="menu-copy">
+                <p className="menu-type">Deep Space - Essential Five</p>
+                <h3>Polaris Ice</h3>
+                <p className="tag">Sparkling citrus, fresh zest</p>
+                <p className="menu-detail">
+                  Clear sparkling citrus with fresh zest - crisp, cold and effortlessly refined.
+                </p>
               </div>
             </article>
           </div>
