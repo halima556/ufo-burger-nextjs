@@ -518,7 +518,7 @@ export default function Home() {
 
     // ---------- Pluto fallback ----------
     const plutoImage = document.querySelector<HTMLImageElement>('[data-planet="pluto"] img');
-    const plutoCandidates = ["/planets/pluto.png", "/planets/earth.png", "/planets/jupiter.png"];
+    const plutoCandidates = ["/planets/pluto.PNG", "/planets/earth.PNG", "/planets/jupiter.png"];
     let plutoIndex = Math.max(plutoCandidates.indexOf(plutoImage?.getAttribute("src") || ""), 0);
 
     const handlePlutoError = () => {
@@ -779,7 +779,7 @@ export default function Home() {
               className="menu-item menu-feature menu-feature--mercury savory reveal-item"
               style={withRevealDelay("0.02s")}
             >
-              <img src="/planets/mercury.png" alt="Mercury Burger" loading="lazy" />
+              <img src="/planets/mercury.PNG" alt="Mercury Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Mercury</h3>
@@ -789,7 +789,7 @@ export default function Home() {
             </article>
 
             <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.04s")}>
-              <img src="/planets/venus.png" alt="Venus Burger" loading="lazy" />
+              <img src="/planets/venus.PNG" alt="Venus Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Venus</h3>
@@ -799,7 +799,7 @@ export default function Home() {
             </article>
 
             <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.06s")}>
-              <img src="/planets/earth.png" alt="Earth Burger" loading="lazy" />
+              <img src="/planets/earth.PNG" alt="Earth Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Earth</h3>
@@ -809,7 +809,7 @@ export default function Home() {
             </article>
 
             <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.08s")}>
-              <img src="/planets/mars.png" alt="Mars Burger" loading="lazy" />
+              <img src="/planets/mars.PNG" alt="Mars Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Mars</h3>
@@ -832,7 +832,7 @@ export default function Home() {
               className="menu-item menu-feature menu-feature--saturn savory reveal-item"
               style={withRevealDelay("0.12s")}
             >
-              <img src="/planets/saturn.png" alt="Saturn Burger" loading="lazy" />
+              <img src="/planets/saturn.PNG" alt="Saturn Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Saturn</h3>
@@ -845,7 +845,7 @@ export default function Home() {
               className="menu-item menu-feature menu-feature--neptune savory reveal-item"
               style={withRevealDelay("0.14s")}
             >
-              <img src="/planets/neptune.png" alt="Neptune Burger" loading="lazy" />
+              <img src="/planets/neptune.PNG" alt="Neptune Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Neptune</h3>
@@ -859,7 +859,7 @@ export default function Home() {
               data-planet="pluto"
               style={withRevealDelay("0.16s")}
             >
-              <img src="/planets/pluto.png" alt="Pluto Burger" loading="lazy" />
+              <img src="/planets/pluto.PNG" alt="Pluto Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Pluto</h3>
@@ -869,7 +869,7 @@ export default function Home() {
             </article>
 
             <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.18s")}>
-              <img src="/planets/sirius.png" alt="Sirius Burger" loading="lazy" />
+              <img src="/planets/sirius.PNG" alt="Sirius Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Sirius</h3>
