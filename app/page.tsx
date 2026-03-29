@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useEffect, type CSSProperties } from "react";
 
@@ -517,7 +518,7 @@ export default function Home() {
 
     // ---------- Pluto fallback ----------
     const plutoImage = document.querySelector<HTMLImageElement>('[data-planet="pluto"] img');
-    const plutoCandidates = ["/assets/media/pluto.png", "/assets/media/earth.png", "/assets/media/jupiter.png"];
+    const plutoCandidates = ["/planets/pluto.png", "/planets/earth.png", "/planets/jupiter.png"];
     let plutoIndex = Math.max(plutoCandidates.indexOf(plutoImage?.getAttribute("src") || ""), 0);
 
     const handlePlutoError = () => {
@@ -775,7 +776,7 @@ export default function Home() {
               className="menu-item menu-feature menu-feature--mercury savory reveal-item"
               style={withRevealDelay("0.02s")}
             >
-              <img src="/assets/media/mercury2.PNG" alt="Mercury Burger" loading="lazy" />
+              <img src="/planets/mercury.png" alt="Mercury Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Mercury</h3>
@@ -785,7 +786,7 @@ export default function Home() {
             </article>
 
             <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.04s")}>
-              <img src="/assets/media/venus.png" alt="Venus Burger" loading="lazy" />
+              <img src="/planets/venus.png" alt="Venus Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Venus</h3>
@@ -795,7 +796,17 @@ export default function Home() {
             </article>
 
             <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.06s")}>
-              <img src="/assets/media/mars.png" alt="Mars Burger" loading="lazy" />
+              <img src="/planets/earth.png" alt="Earth Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Earth</h3>
+                <p className="tag">Classic, balanced, fresh</p>
+                <p className="menu-detail">Beef, lettuce, tomato, pickles, house sauce.</p>
+              </div>
+            </article>
+
+            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.08s")}>
+              <img src="/planets/mars.png" alt="Mars Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Mars</h3>
@@ -804,11 +815,21 @@ export default function Home() {
               </div>
             </article>
 
+            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.1s")}>
+              <img src="/planets/jupiter.png" alt="Jupiter Burger" loading="lazy" />
+              <div className="menu-copy">
+                <p className="menu-type">Savory Burger</p>
+                <h3>Jupiter</h3>
+                <p className="tag">Big, bold, layered</p>
+                <p className="menu-detail">Double beef, cheddar, bacon, onion, BBQ.</p>
+              </div>
+            </article>
+
             <article
               className="menu-item menu-feature menu-feature--saturn savory reveal-item"
-              style={withRevealDelay("0.08s")}
+              style={withRevealDelay("0.12s")}
             >
-              <img src="/assets/media/saturn.png" alt="Saturn Burger" loading="lazy" />
+              <img src="/planets/saturn.png" alt="Saturn Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Saturn</h3>
@@ -819,9 +840,9 @@ export default function Home() {
 
             <article
               className="menu-item menu-feature menu-feature--neptune savory reveal-item"
-              style={withRevealDelay("0.1s")}
+              style={withRevealDelay("0.14s")}
             >
-              <img src="/assets/media/neptune.png" alt="Neptune Burger" loading="lazy" />
+              <img src="/planets/neptune.png" alt="Neptune Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Neptune</h3>
@@ -833,9 +854,9 @@ export default function Home() {
             <article
               className="menu-item menu-feature menu-feature--pluto savory reveal-item"
               data-planet="pluto"
-              style={withRevealDelay("0.12s")}
+              style={withRevealDelay("0.16s")}
             >
-              <img src="/assets/media/pluto.png" alt="Pluto Burger" loading="lazy" />
+              <img src="/planets/pluto.png" alt="Pluto Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Pluto</h3>
@@ -844,8 +865,8 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.14s")}>
-              <img src="/assets/media/sirius1.png" alt="Sirius Burger" loading="lazy" />
+            <article className="menu-item menu-feature savory reveal-item" style={withRevealDelay("0.18s")}>
+              <img src="/planets/sirius.png" alt="Sirius Burger" loading="lazy" />
               <div className="menu-copy">
                 <p className="menu-type">Savory Burger</p>
                 <h3>Sirius</h3>
@@ -854,7 +875,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.16s")}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.2s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Aurora</h3>
@@ -863,7 +884,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.18s")}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.22s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Ice Comet</h3>
@@ -872,7 +893,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.2s")}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.24s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Dark Matter</h3>
@@ -881,7 +902,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.22s")}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.26s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Luna</h3>
@@ -890,7 +911,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.24s")}>
+            <article className="menu-item sweet-line-item sweet reveal-item" style={withRevealDelay("0.28s")}>
               <div className="menu-copy">
                 <p className="menu-type">Sweet Line</p>
                 <h3>Cosmic Cloud</h3>

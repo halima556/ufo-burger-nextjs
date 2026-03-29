@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:restart": "node scripts/kill-local-next-dev.cjs && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
