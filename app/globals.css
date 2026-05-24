@@ -11,3 +11,10 @@
 @import "./styles/modal.module.css";
 @import "./styles/animations.module.css";
 @import "./styles/responsive.module.css";
+
+@media (max-width: 760px) {
+  .back-to-top {
+    bottom: 5rem;
+    right: 1rem;
+  }
+}
