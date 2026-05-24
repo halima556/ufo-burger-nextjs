@@ -1,0 +1,197 @@
+@media (max-width: 980px) {
+  /* Адаптация для планшетов */
+  .inside-section {
+    width: calc(100% - 1.5rem);
+  }
+
+  .inside-shot:nth-child(1) {
+    min-height: clamp(300px, 46vh, 470px);
+  }
+
+  .scene-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .menu-feature,
+  .menu-feature:nth-child(even) {
+    grid-template-columns: minmax(160px, 225px) minmax(0, 1fr);
+  }
+
+  .menu-feature:nth-child(even) img {
+    order: 0;
+  }
+
+  .menu-feature:nth-child(even) .menu-copy {
+    order: 0;
+    text-align: left;
+  }
+
+  .menu-feature:nth-child(even) .menu-detail {
+    margin-left: 0;
+  }
+
+  .four-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  /* Адаптация для мобильных устройств */
+  .floating-investor-cta {
+    right: 0.65rem;
+    left: 0.65rem;
+    bottom: 0.6rem;
+  }
+
+  .floating-investor-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .back-to-top {
+    right: 0.65rem;
+    bottom: 4.8rem;
+  }
+
+  .site-header {
+    gap: 0.55rem;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .main-nav-drawer {
+    right: 0.65rem;
+    width: min(320px, calc(100% - 1.3rem));
+  }
+
+  .nav-toggle.is-open {
+    right: calc(0.65rem + 0.4rem);
+  }
+
+  .two-col,
+  .menu-grid,
+  .four-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .menu-feature,
+  .menu-feature:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.8rem;
+    padding-bottom: 1rem;
+  }
+
+  .menu-feature img {
+    width: 100%;
+    max-width: none;
+  }
+
+  .scene-strip {
+    width: calc(100% - 1.35rem);
+    margin-top: -1.65rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scene-strip p {
+    text-align: left;
+  }
+
+  .inside-section {
+    width: calc(100% - 1.35rem);
+    padding-inline: 0.25rem;
+    padding-bottom: 2.4rem;
+  }
+
+  .inside-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.85rem;
+  }
+
+  .inside-shot,
+  .inside-shot:nth-child(1) {
+    grid-column: auto;
+    min-height: clamp(250px, 40vh, 350px);
+  }
+
+  .inside-shot img {
+    max-height: clamp(200px, 36vh, 320px);
+  }
+
+  .inside-caption {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    left: 0.4rem;
+    right: 0.4rem;
+  }
+
+  .legend-epic {
+    width: calc(100% - 1.35rem);
+    border-radius: 26px;
+  }
+
+  .legend-chapter p {
+    max-width: 96%;
+    line-height: 1.66;
+  }
+
+  .legend-chapter .legend-lead::first-letter {
+    font-size: clamp(2rem, 10vw, 2.5rem);
+    margin-right: 0.35rem;
+  }
+
+  .legend-quote {
+    max-width: 96%;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 5.7rem;
+  }
+
+  .hero-watermark-cta {
+    right: 0.45rem;
+    bottom: 0.45rem;
+    font-size: 0.74rem;
+    padding: 0.42rem 0.66rem;
+  }
+
+  .hero-media {
+    width: 100%;
+    max-width: 420px;
+    margin: -1.55rem auto 0;
+  }
+
+  .hero-media::before {
+    background:
+      radial-gradient(
+        ellipse 40% 26% at 84% 90%,
+        rgba(0, 0, 0, 0.82) 0%,
+        rgba(0, 0, 0, 0.52) 48%,
+        rgba(0, 0, 0, 0) 80%
+      ),
+      radial-gradient(
+        ellipse 30% 20% at 80% 87%,
+        rgba(0, 0, 0, 0.64) 0%,
+        rgba(0, 0, 0, 0) 76%
+      );
+  }
+
+  .hero-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 52vh;
+    object-fit: contain;
+    opacity: 1;
+    object-position: center;
+  }
+
+  .hero-overlay {
+    display: none;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+

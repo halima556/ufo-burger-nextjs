@@ -1,0 +1,25 @@
+.reveal-item {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.reveal-ready .reveal-item {
+  /* Начальное состояние анимации при скролле */
+  opacity: 0;
+  transform: translateY(44px) scale(0.88);
+  filter: blur(7px);
+  transition:
+    opacity 0.78s ease,
+    transform 0.92s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.92s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.reveal-ready .reveal-item.is-visible {
+  /* Финальное состояние анимации при скролле */
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+

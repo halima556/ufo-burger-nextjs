@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { InputField, StatusMessage, TextareaField } from "@/app/components/ui/FormFields";
-import {
-  buildLeadWhatsAppText,
-  openWhatsApp,
-  validateEmail,
-  validateLeadType,
-  validatePhone,
-} from "@/app/lib/utils";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { investorFormSchema, type InvestorFormData } from "@/app/lib/schemas";
+import { StatusMessage } from "@/app/components/ui/FormFields";
+import { buildLeadWhatsAppText, openWhatsApp } from "@/app/lib/utils";
+import { useState } from "react";
 
 interface InvestorModalProps {
   isOpen: boolean;
@@ -22,49 +20,34 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
     type: "",
   });
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<InvestorFormData>({
+    resolver: zodResolver(investorFormSchema),
+    defaultValues: { leadType: "Investor" },
+  });
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => firstInputRef.current?.focus(), 50);
     } else {
+      reset();
       setStatus({ msg: "", type: "" });
     }
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const name = String(fd.get("name") ?? "").trim();
-    const leadType = String(fd.get("leadType") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim().toLowerCase();
-    const phone = String(fd.get("phone") ?? "").trim();
-    const company = String(fd.get("company") ?? "").trim();
-    const message = String(fd.get("message") ?? "").trim();
-
-    if (name.length < 2) {
-      setStatus({ msg: "Please enter a valid name (at least 2 characters).", type: "error" });
-      return;
-    }
-    if (!validateEmail(email)) {
-      setStatus({ msg: "Please enter a valid email address.", type: "error" });
-      return;
-    }
-    if (!validateLeadType(leadType)) {
-      setStatus({ msg: "Please select a valid lead type.", type: "error" });
-      return;
-    }
-    if (!validatePhone(phone)) {
-      setStatus({ msg: "Please enter a valid phone/WhatsApp number.", type: "error" });
-      return;
-    }
-
+  const onSubmit = async (data: InvestorFormData) => {
     const text = buildLeadWhatsAppText({
       source: "Investor modal form",
-      leadType,
-      name,
-      email,
-      phone,
-      company,
-      message,
+      leadType: data.leadType,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      company: data.company,
+      message: data.message,
     });
 
     if (!openWhatsApp(text)) {
@@ -73,7 +56,7 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
     }
 
     setStatus({ msg: "WhatsApp opened with your contact details.", type: "success" });
-    (e.target as HTMLFormElement).reset();
+    reset();
     setTimeout(onClose, 500);
   };
 
@@ -81,11 +64,7 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
 
   return (
     <div className="investor-modal" id="investor-modal">
-      <div
-        className="investor-modal__overlay"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="investor-modal__overlay" onClick={onClose} aria-hidden="true" />
       <section
         className="investor-modal__dialog panel"
         role="dialog"
@@ -104,69 +83,86 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
         <h2 id="investor-modal-title">Investor Contact</h2>
         <p className="section-subtitle">SEND YOUR DETAILS TO WHATSAPP</p>
 
-        <form className="crew-form" onSubmit={handleSubmit}>
-          <InputField
+        <form className="crew-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <label htmlFor="investor-name">YOUR NAME</label>
+          <input
             ref={firstInputRef}
-            label="YOUR NAME"
             id="investor-name"
-            name="name"
             type="text"
-            minLength={2}
-            maxLength={80}
             autoComplete="name"
             placeholder="Enter your name"
-            required
+            aria-invalid={!!errors.name}
+            {...register("name")}
           />
+          {errors.name && (
+            <p className="field-error" role="alert">{errors.name.message}</p>
+          )}
 
           <label htmlFor="investor-type">LEAD TYPE</label>
-          <select id="investor-type" name="leadType" defaultValue="Investor" required>
+          <select
+            id="investor-type"
+            aria-invalid={!!errors.leadType}
+            {...register("leadType")}
+          >
             <option value="Investor">Investor</option>
             <option value="Partner">Partner</option>
             <option value="Customer">Customer</option>
             <option value="Other">Other</option>
           </select>
+          {errors.leadType && (
+            <p className="field-error" role="alert">{errors.leadType.message}</p>
+          )}
 
-          <InputField
-            label="EMAIL ADDRESS"
+          <label htmlFor="investor-email">EMAIL ADDRESS</label>
+          <input
             id="investor-email"
-            name="email"
             type="email"
             autoComplete="email"
             placeholder="your@email.com"
-            required
+            aria-invalid={!!errors.email}
+            {...register("email")}
           />
-          <InputField
-            label="PHONE / WHATSAPP"
+          {errors.email && (
+            <p className="field-error" role="alert">{errors.email.message}</p>
+          )}
+
+          <label htmlFor="investor-phone">PHONE / WHATSAPP</label>
+          <input
             id="investor-phone"
-            name="phone"
             type="tel"
-            minLength={6}
-            maxLength={30}
             autoComplete="tel"
             placeholder="+44..."
-            required
+            aria-invalid={!!errors.phone}
+            {...register("phone")}
           />
-          <InputField
-            label="COMPANY (OPTIONAL)"
+          {errors.phone && (
+            <p className="field-error" role="alert">{errors.phone.message}</p>
+          )}
+
+          <label htmlFor="investor-company">COMPANY (OPTIONAL)</label>
+          <input
             id="investor-company"
-            name="company"
             type="text"
-            maxLength={80}
             autoComplete="organization"
             placeholder="Your company name"
+            {...register("company")}
           />
-          <TextareaField
-            label="MESSAGE (OPTIONAL)"
+
+          <label htmlFor="investor-message">MESSAGE (OPTIONAL)</label>
+          <textarea
             id="investor-message"
-            name="message"
             rows={4}
-            maxLength={500}
             placeholder="Tell us what kind of partnership or investment you are looking for..."
+            {...register("message")}
           />
 
           <div className="form-actions">
-            <button className="btn btn-primary" type="submit">
-              Send via WhatsApp
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending..." : "Send via WhatsApp"}
             </button>
           </div>
 
