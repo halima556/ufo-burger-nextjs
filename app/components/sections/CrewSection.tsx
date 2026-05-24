@@ -1,23 +1,24 @@
 "use client";
 
-import { type CSSProperties } from "react";
+import { type CSSProperties, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { crewFormSchema, type CrewFormData } from "@/app/lib/schemas";
 import { StatusMessage } from "@/app/components/ui/FormFields";
 import { useWaitlist } from "@/app/hooks/useWaitlist";
 import { buildLeadWhatsAppText, isEmailDuplicate, openWhatsApp } from "@/app/lib/utils";
-import { useState } from "react";
+import { checkRateLimit, getRateLimitKey } from "@/app/lib/rateLimit";
+import { isSuspiciousInput, sanitizeFormData } from "@/app/lib/sanitize";
 
 type RevealStyle = CSSProperties & Record<"--reveal-delay", string>;
 const delay = (d: string): RevealStyle => ({ "--reveal-delay": d });
 
 export function CrewSection() {
   const { countLabel, addEntry } = useWaitlist();
-  const [status, setStatus] = useState<{ msg: string; type: "success" | "error" | "" }>({
-    msg: "",
-    type: "",
-  });
+  const [status, setStatus] = useState<{
+    msg: string;
+    type: "success" | "error" | "";
+  }>({ msg: "", type: "" });
 
   const {
     register,
@@ -29,42 +30,81 @@ export function CrewSection() {
   });
 
   const onSubmit = async (data: CrewFormData) => {
-    if (isEmailDuplicate(data.email)) {
-      setStatus({ msg: "This email is already on the launch access list.", type: "error" });
+    // Rate limiting
+    const rlKey = getRateLimitKey("crew-form");
+    const { allowed, remainingMs } = checkRateLimit(rlKey);
+    if (!allowed) {
+      const seconds = Math.ceil(remainingMs / 1000);
+      setStatus({
+        msg: `Too many attempts. Please wait ${seconds} seconds.`,
+        type: "error",
+      });
+      return;
+    }
+
+    // Sanitize inputs
+    const sanitized = sanitizeFormData({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.message ?? "",
+    });
+
+    // Check for suspicious input
+    if (Object.values(sanitized).some(isSuspiciousInput)) {
+      setStatus({ msg: "Invalid input detected.", type: "error" });
+      return;
+    }
+
+    // Honeypot check
+    const honeypot = (document.getElementById("website") as HTMLInputElement)?.value;
+    if (honeypot) return;
+
+    if (isEmailDuplicate(sanitized.email)) {
+      setStatus({
+        msg: "This email is already on the launch access list.",
+        type: "error",
+      });
       return;
     }
 
     const text = buildLeadWhatsAppText({
       source: "Crew waitlist form",
       leadType: "Customer",
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      message: data.message,
+      ...sanitized,
     });
 
     setStatus({ msg: "Opening WhatsApp...", type: "success" });
 
     if (!openWhatsApp(text)) {
-      setStatus({ msg: "WhatsApp contact is not configured yet.", type: "error" });
+      setStatus({
+        msg: "WhatsApp contact is not configured yet.",
+        type: "error",
+      });
       return;
     }
 
     const ok = addEntry({
-      name: data.name,
-      email: data.email,
+      name: sanitized.name,
+      email: sanitized.email,
       leadType: "Customer",
-      phone: data.phone,
-      message: data.message ?? "",
+      phone: sanitized.phone,
+      message: sanitized.message,
       createdAt: new Date().toISOString(),
     });
 
     if (!ok) {
-      setStatus({ msg: "WhatsApp opened, but local save failed. Please submit again.", type: "error" });
+      setStatus({
+        msg: "WhatsApp opened, but local save failed. Please submit again.",
+        type: "error",
+      });
       return;
     }
 
-    setStatus({ msg: `Thanks ${data.name}! WhatsApp opened and your launch access is saved.`, type: "success" });
+    setStatus({
+      msg: `Thanks ${sanitized.name}! WhatsApp opened and your launch access is saved.`,
+      type: "success",
+    });
     reset();
   };
 
@@ -91,6 +131,17 @@ export function CrewSection() {
           onSubmit={handleSubmit(onSubmit)}
           noValidate
         >
+          {/* Honeypot field — hidden from users, visible to bots */}
+          <input
+            id="website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ display: "none" }}
+          />
+
           <label htmlFor="name">YOUR NAME</label>
           <input
             id="name"
@@ -101,7 +152,9 @@ export function CrewSection() {
             {...register("name")}
           />
           {errors.name && (
-            <p className="field-error" role="alert">{errors.name.message}</p>
+          <p className="field-error" role="alert">
+              {errors.name.message}
+            </p>
           )}
 
           <label htmlFor="email">EMAIL ADDRESS</label>
@@ -114,7 +167,9 @@ export function CrewSection() {
             {...register("email")}
           />
           {errors.email && (
-            <p className="field-error" role="alert">{errors.email.message}</p>
+            <p className="field-error" role="alert">
+              {errors.email.message}
+            </p>
           )}
 
           <label htmlFor="phone">PHONE / WHATSAPP</label>
@@ -127,7 +182,9 @@ export function CrewSection() {
             {...register("phone")}
           />
           {errors.phone && (
-            <p className="field-error" role="alert">{errors.phone.message}</p>
+            <p className="field-error" role="alert">
+              {errors.phone.message}
+            </p>
           )}
 
           <label htmlFor="message">MESSAGE (OPTIONAL)</label>
@@ -139,7 +196,9 @@ export function CrewSection() {
             {...register("message")}
           />
           {errors.message && (
-            <p className="field-error" role="alert">{errors.message.message}</p>
+            <p className="field-error" role="alert">
+              {errors.message.message}
+            </p>
           )}
 
           <div className="form-actions">

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { investorFormSchema, type InvestorFormData } from "@/app/lib/schemas";
 import { StatusMessage } from "@/app/components/ui/FormFields";
 import { buildLeadWhatsAppText, openWhatsApp } from "@/app/lib/utils";
-import { useState } from "react";
+import { checkRateLimit, getRateLimitKey } from "@/app/lib/rateLimit";
+import { isSuspiciousInput, sanitizeFormData } from "@/app/lib/sanitize";
 
 interface InvestorModalProps {
   isOpen: boolean;
@@ -15,10 +16,10 @@ interface InvestorModalProps {
 
 export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
   const firstInputRef = useRef<HTMLInputElement>(null);
-  const [status, setStatus] = useState<{ msg: string; type: "success" | "error" | "" }>({
-    msg: "",
-    type: "",
-  });
+  const [status, setStatus] = useState<{
+    msg: string;
+    type: "success" | "error" | "";
+  }>({ msg: "", type: "" });
 
   const {
     register,
@@ -40,31 +41,69 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
   }, [isOpen, reset]);
 
   const onSubmit = async (data: InvestorFormData) => {
-    const text = buildLeadWhatsAppText({
-      source: "Investor modal form",
-      leadType: data.leadType,
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      company: data.company,
-      message: data.message,
-    });
-
-    if (!openWhatsApp(text)) {
-      setStatus({ msg: "WhatsApp contact is not configured yet.", type: "error" });
+    const rlKey = getRateLimitKey("investor-form");
+    const { allowed, remainingMs } = checkRateLimit(rlKey, 3, 60_000);
+    if (!allowed) {
+      const seconds = Math.ceil(remainingMs / 1000);
+      setStatus({
+        msg: `Too many attempts. Please wait ${seconds} seconds.`,
+        type: "error",
+      });
       return;
     }
 
-    setStatus({ msg: "WhatsApp opened with your contact details.", type: "success" });
+    const honeypot = (
+      document.getElementById("investor-website") as HTMLInputElement
+    )?.value;
+    if (honeypot) return;
+
+    const sanitized = sanitizeFormData({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      company: data.company ?? "",
+      message: data.message ?? "",
+    });
+
+    if (Object.values(sanitized).some(isSuspiciousInput)) {
+      setStatus({ msg: "Invalid input detected.", type: "error" });
+      return;
+    }
+
+    const text = buildLeadWhatsAppText({
+      source: "Investor modal form",
+      leadType: data.leadType,
+      ...sanitized,
+    });
+
+    if (!openWhatsApp(text)) {
+      setStatus({
+        msg: "WhatsApp contact is not configured yet.",
+        type: "error",
+      });
+      return;
+    }
+
+    setStatus({
+      msg: "WhatsApp opened with your contact details.",
+      type: "success",
+    });
     reset();
     setTimeout(onClose, 500);
   };
+
+  // Merge ref from register with our firstInputRef
+  const { ref: registerRef, ...nameRegister } = register("name");
 
   if (!isOpen) return null;
 
   return (
     <div className="investor-modal" id="investor-modal">
-      <div className="investor-modal__overlay" onClick={onClose} aria-hidden="true" />
+      <div
+        className="investor-modal__overlay"
+        onClick={onClose}
+        aria-hidden="true"
+      />
       <section
         className="investor-modal__dialog panel"
         role="dialog"
@@ -83,19 +122,38 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
         <h2 id="investor-modal-title">Investor Contact</h2>
         <p className="section-subtitle">SEND YOUR DETAILS TO WHATSAPP</p>
 
-        <form className="crew-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form
+          className="crew-form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
+          <input
+            id="investor-website"
+            name="investor-website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ display: "none" }}
+          />
+
           <label htmlFor="investor-name">YOUR NAME</label>
           <input
-            ref={firstInputRef}
             id="investor-name"
             type="text"
             autoComplete="name"
             placeholder="Enter your name"
             aria-invalid={!!errors.name}
-            {...register("name")}
+            ref={(el) => {
+              registerRef(el);
+              (firstInputRef as React.MutableRefObject<HTMLInputElement | null>).current = el;
+            }}
+            {...nameRegister}
           />
           {errors.name && (
-            <p className="field-error" role="alert">{errors.name.message}</p>
+            <p className="field-error" role="alert">
+              {errors.name.message}
+            </p>
           )}
 
           <label htmlFor="investor-type">LEAD TYPE</label>
@@ -109,9 +167,6 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
             <option value="Customer">Customer</option>
             <option value="Other">Other</option>
           </select>
-          {errors.leadType && (
-            <p className="field-error" role="alert">{errors.leadType.message}</p>
-          )}
 
           <label htmlFor="investor-email">EMAIL ADDRESS</label>
           <input
@@ -123,7 +178,9 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
             {...register("email")}
           />
           {errors.email && (
-            <p className="field-error" role="alert">{errors.email.message}</p>
+            <p className="field-error" role="alert">
+              {errors.email.message}
+            </p>
           )}
 
           <label htmlFor="investor-phone">PHONE / WHATSAPP</label>
@@ -136,7 +193,9 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
             {...register("phone")}
           />
           {errors.phone && (
-            <p className="field-error" role="alert">{errors.phone.message}</p>
+            <p className="field-error" role="alert">
+              {errors.phone.message}
+            </p>
           )}
 
           <label htmlFor="investor-company">COMPANY (OPTIONAL)</label>
