@@ -1,13 +1,7 @@
-/* ── Base styles (variables, reset, typography) ─────────────── */
+@import "tailwindcss";
 @import "./styles/base.css";
-
-/* ── UI components ───────────────────────────────────────────── */
 @import "./styles/ui.module.css";
-
-/* ── Layout ──────────────────────────────────────────────────── */
 @import "./styles/header.module.css";
-
-/* ── Sections ────────────────────────────────────────────────── */
 @import "./styles/hero.module.css";
 @import "./styles/inside.module.css";
 @import "./styles/legend.module.css";
@@ -15,11 +9,5 @@
 @import "./styles/menu.module.css";
 @import "./styles/crew.module.css";
 @import "./styles/modal.module.css";
-
-/* 
-
-── Animations & reveal ─────────────────────────────────────── */
 @import "./styles/animations.module.css";
-
-/* ── Responsive ──────────────────────────────────────────────── */
 @import "./styles/responsive.module.css";

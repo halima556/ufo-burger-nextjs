@@ -12,8 +12,26 @@ export function Hero({ onInvestorClick }: HeroProps) {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
     video.muted = true;
-    video.play().catch(() => {});
+    video.playsInline = true;
+
+    const tryPlay = () => {
+      video.play().catch(() => {});
+    };
+
+    tryPlay();
+
+    // Safari requires user interaction
+    document.addEventListener("touchstart", tryPlay, { once: true });
+    document.addEventListener("click", tryPlay, { once: true });
+    document.addEventListener("keydown", tryPlay, { once: true });
+
+    return () => {
+      document.removeEventListener("touchstart", tryPlay);
+      document.removeEventListener("click", tryPlay);
+      document.removeEventListener("keydown", tryPlay);
+    };
   }, []);
 
   return (
@@ -32,7 +50,6 @@ export function Hero({ onInvestorClick }: HeroProps) {
         </video>
         <div className="hero-overlay" />
       </div>
-
       <div className="hero-content">
         <p className="eyebrow">Since 1987 - Recipes from another orbit</p>
         <h1>Premium Closed Burgers from Distant Worlds</h1>

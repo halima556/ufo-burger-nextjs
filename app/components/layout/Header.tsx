@@ -16,10 +16,8 @@ export function Header({ onInvestorClick }: HeaderProps) {
         <a href="#top" className="brand brand--glow">
           UFO BURGER
         </a>
-
         <button
           className={`nav-toggle${isOpen ? " is-open" : ""}`}
-          id="nav-toggle"
           type="button"
           aria-label={isOpen ? "Close main menu" : "Open main menu"}
           aria-controls="main-nav-drawer"
@@ -30,7 +28,6 @@ export function Header({ onInvestorClick }: HeaderProps) {
           <span />
           <span />
         </button>
-
         <div
           className={`main-nav-drawer${isOpen ? " is-open" : ""}`}
           id="main-nav-drawer"
@@ -45,7 +42,6 @@ export function Header({ onInvestorClick }: HeaderProps) {
           </nav>
         </div>
       </header>
-
       {isOpen && (
         <button
           className="nav-backdrop is-open"
