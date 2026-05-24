@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { MENU_ITEMS } from "@/app/lib/constants";
 import type { MenuCategory, MenuItem } from "@/app/types";
 
@@ -14,8 +14,17 @@ const TABS: { label: string; value: MenuCategory }[] = [
   { label: "Drinks", value: "drinks" },
 ];
 
-function MenuCard({ item, index }: { item: MenuItem; index: number }) {
-  const [isOpen, setIsOpen] = useState(false);
+function MenuCard({
+  item,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  item: MenuItem;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   const d = `${(0.02 + index * 0.02).toFixed(2)}s`;
   const isSavory = item.category === "savory";
   const isSweet = item.category === "sweet";
@@ -24,7 +33,6 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
   const classes = [
     "menu-item",
     "reveal-item",
-    "is-visible",
     isSavory && "menu-feature",
     isSavory && item.planetClass,
     isSavory && isOpen && "is-open",
@@ -41,13 +49,17 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
       style={delay(d)}
       role={isSavory ? "button" : undefined}
       tabIndex={isSavory ? 0 : undefined}
-      onClick={() => isSavory && setIsOpen((v) => !v)}
-      onKeyDown={(e) => {
-        if (isSavory && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault();
-          setIsOpen((v) => !v);
-        }
-      }}
+      onClick={isSavory ? onToggle : undefined}
+      onKeyDown={
+        isSavory
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onToggle();
+              }
+            }
+          : undefined
+      }
     >
       {item.image && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -65,11 +77,55 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
 
 export function MenuSection() {
   const [active, setActive] = useState<MenuCategory>("all");
+  const [openId, setOpenId] = useState<string | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const filtered =
     active === "all"
       ? MENU_ITEMS
       : MENU_ITEMS.filter((i) => i.category === active);
+
+  useEffect(() => {
+    setOpenId(null);
+  }, [active]);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    grid.querySelectorAll<HTMLElement>(".reveal-item").forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.classList.add("is-visible");
+      } else {
+        el.classList.remove("is-visible");
+        observer.observe(el);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [filtered]);
+
+  const handleToggle = (id: string) => {
+    setOpenId((prev) => (prev === id ? null : id));
+    setTimeout(() => {
+      gridRef.current
+        ?.querySelectorAll<HTMLElement>(".reveal-item")
+        .forEach((el) => el.classList.add("is-visible"));
+    }, 10);
+  };
 
   return (
     <section id="menu" className="section section-menu">
@@ -95,9 +151,15 @@ export function MenuSection() {
         ))}
       </div>
 
-      <div className="menu-grid">
+      <div className="menu-grid" ref={gridRef}>
         {filtered.map((item, i) => (
-          <MenuCard key={item.id} item={item} index={i} />
+          <MenuCard
+            key={item.id}
+            item={item}
+            index={i}
+            isOpen={openId === item.id}
+            onToggle={() => handleToggle(item.id)}
+          />
         ))}
       </div>
     </section>
