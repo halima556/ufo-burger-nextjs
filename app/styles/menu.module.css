@@ -1,0 +1,450 @@
+.section-menu {
+  position: relative;
+  padding-top: 2.15rem;
+}
+
+.section-menu .section-head {
+  text-align: center;
+  margin-bottom: 1.4rem;
+}
+
+.menu-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.45rem;
+  justify-content: center;
+}
+
+.tab-btn {
+  border: 1px solid rgba(137, 173, 255, 0.36);
+  color: #cfddfa;
+  background: rgba(10, 17, 35, 0.7);
+  border-radius: 999px;
+  padding: 0.52rem 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.tab-btn.is-active {
+  border-color: transparent;
+  color: #041522;
+  background: linear-gradient(90deg, #85e6ff, #f7c070);
+}
+
+.menu-grid {
+  /* Единый ритм меню в одну колонку */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+.menu-item {
+  background: transparent;
+}
+
+.menu-feature {
+  /* Визуальный блок savory-позиции */
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  --tilt-rot: 0deg;
+  --zoom-scale: 1;
+  display: grid;
+  grid-template-columns: minmax(210px, 300px) minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: center;
+  padding: 0.15rem 0 1.35rem;
+  position: relative;
+  z-index: 0;
+  transition: transform 0.3s ease;
+}
+
+.menu-feature::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(132, 173, 255, 0),
+    rgba(132, 173, 255, 0.42),
+    rgba(132, 173, 255, 0)
+  );
+}
+
+.menu-feature:nth-child(even) {
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 300px);
+}
+
+.menu-feature:nth-child(even) img {
+  order: 2;
+}
+
+.menu-feature:nth-child(even) .menu-copy {
+  order: 1;
+  text-align: right;
+}
+
+.menu-feature:hover {
+  transform: translateY(-4px);
+}
+
+.menu-feature img {
+  width: min(100%, 300px);
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+  opacity: 1;
+  mix-blend-mode: normal;
+  filter: saturate(1.02) contrast(1.05) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.42));
+  background: transparent;
+  transform-origin: center;
+  will-change: transform;
+  animation: burgerFloat 10.5s ease-in-out infinite;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+.menu-feature--saturn img,
+.menu-feature--neptune img {
+  /* Soft mask reduces rough PNG edge fringing */
+  -webkit-mask-image: radial-gradient(
+    ellipse 96% 90% at 50% 50%,
+    rgba(0, 0, 0, 1) 78%,
+    rgba(0, 0, 0, 0.45) 92%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 96% 90% at 50% 50%,
+    rgba(0, 0, 0, 1) 78%,
+    rgba(0, 0, 0, 0.45) 92%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.menu-feature--pluto img {
+  filter: saturate(1.08) contrast(1.1) brightness(1.06) drop-shadow(0 20px 40px rgba(5, 12, 30, 0.62));
+}
+
+.menu-feature.is-spotlight {
+  --zoom-scale: 1.085;
+}
+
+.menu-feature.is-spotlight img {
+  opacity: 1;
+  filter: saturate(1.06) contrast(1.1) drop-shadow(0 14px 28px rgba(5, 12, 30, 0.56));
+}
+
+.menu-feature.is-spotlight .menu-copy h3 {
+  text-shadow: 0 0 18px rgba(132, 235, 255, 0.34);
+}
+
+@media (min-width: 761px) {
+  .hero-video {
+    transform: scale(1.06);
+    object-position: center 58%;
+  }
+}
+
+@keyframes burgerFloat {
+  0%,
+  100% {
+    transform: translate3d(
+        var(--parallax-x),
+        calc(var(--parallax-y) - 4px),
+        0
+      )
+      scale(var(--zoom-scale))
+      rotate(calc(var(--tilt-rot) - 0.35deg));
+  }
+  50% {
+    transform: translate3d(
+        var(--parallax-x),
+        calc(var(--parallax-y) + 4px),
+        0
+      )
+      scale(var(--zoom-scale))
+      rotate(calc(var(--tilt-rot) + 0.35deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    animation: none;
+    transform: none;
+    filter: none;
+  }
+
+  .hero::after {
+    animation: none;
+  }
+
+  .legend-epic::before {
+    animation: none;
+  }
+
+  .inside-shot img {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  .inside-shot::after {
+    animation: none;
+  }
+
+  .menu-feature img {
+    animation: none;
+    transform: none;
+  }
+
+  .menu-feature::before {
+    transition: none;
+  }
+}
+
+body.performance-lite .ambient-orb,
+body.performance-lite .shooting-stars,
+body.performance-lite .hero::after {
+  display: none;
+}
+
+body.performance-lite .hero {
+  background: #000;
+}
+
+body.performance-lite .hero-overlay {
+  display: none;
+}
+
+body.performance-lite .hero-video {
+  animation: none;
+  transform: none;
+  filter: none;
+  will-change: auto;
+}
+
+@media (min-width: 761px) {
+  body.performance-lite .hero-video {
+    transform: scale(1.12);
+    object-position: center 54%;
+    clip-path: inset(4% 1.5% 10% 1.5%);
+  }
+}
+
+body.performance-lite .legend-epic::before,
+body.performance-lite .inside-shot::after,
+body.performance-lite .inside-shot::before {
+  animation: none;
+  filter: none;
+}
+
+body.performance-lite .inside-shot img,
+body.performance-lite .menu-feature img {
+  animation: none;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.performance-lite .inside-shot img {
+    animation: insideLuxuryFloat 8.2s linear infinite;
+    transform: translate3d(0, var(--inside-lift), 0) scale(var(--inside-scale));
+    will-change: transform;
+  }
+
+  body.performance-lite .inside-shot:nth-child(1) img {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+}
+
+body.performance-lite .menu-feature::before {
+  transition: none;
+  filter: none;
+}
+
+body.performance-lite .site-header,
+body.performance-lite .panel,
+body.performance-lite .tab-btn,
+body.performance-lite .investor-modal__overlay {
+  backdrop-filter: none;
+}
+
+#project,
+#menu,
+#inside,
+#crew,
+#business {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
+}
+
+.menu-copy {
+  padding: 0;
+}
+
+.menu-copy h3 {
+  font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+}
+
+.menu-feature[role="button"] {
+  cursor: pointer;
+}
+
+.menu-feature[role="button"]:focus-visible {
+  outline: 2px solid rgba(133, 230, 255, 0.9);
+  outline-offset: 6px;
+  border-radius: 16px;
+}
+
+.menu-type {
+  margin: 0 0 0.2rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: rgba(223, 236, 255, 0.58);
+}
+
+.tag {
+  color: var(--accent);
+  margin: 0.2rem 0 0.35rem;
+  font-size: 0.92rem;
+}
+
+.menu-detail {
+  margin: 0;
+  color: #d9e4fa;
+}
+
+.menu-feature .menu-detail {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+  padding: 0.35rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(145, 224, 255, 0.48);
+  background: linear-gradient(105deg, rgba(7, 18, 36, 0.9), rgba(12, 25, 52, 0.9));
+  box-shadow: 0 14px 28px rgba(3, 8, 20, 0.5);
+  color: #eef6ff;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 10px, 0) scale(0.98);
+  transition:
+    opacity 0.3s ease,
+    max-height 0.35s ease,
+    margin-top 0.35s ease,
+    transform 0.35s ease;
+}
+
+.menu-feature .menu-detail::before {
+  content: "Ingredients:";
+  color: #8ee6ff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.64rem;
+}
+
+.menu-feature.is-open .menu-detail {
+  opacity: 1;
+  max-height: 120px;
+  margin-top: 0.45rem;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.menu-feature:nth-child(even) .menu-detail {
+  margin-left: auto;
+}
+
+.sweet-line-item {
+  /* Текстовые позиции десертной линейки без карточек */
+  padding: 0.2rem 0 1rem;
+  border-bottom: 1px solid rgba(129, 165, 244, 0.2);
+}
+
+.sweet-line-item:last-child {
+  border-bottom: 0;
+}
+
+.sweet-line-item .menu-copy h3 {
+  font-size: clamp(1.12rem, 2vw, 1.45rem);
+  letter-spacing: 0.01em;
+}
+
+.sweet-line-item .tag {
+  color: #8fd8ff;
+}
+
+.sweet-line-item .menu-detail {
+  max-width: 74ch;
+}
+
+.drink-item {
+  position: relative;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid rgba(122, 223, 255, 0.22);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(121, 231, 255, 0.14), transparent 34%),
+    linear-gradient(135deg, rgba(7, 16, 33, 0.92), rgba(11, 24, 48, 0.86));
+  box-shadow: 0 18px 36px rgba(2, 8, 24, 0.34);
+  overflow: hidden;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.drink-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, rgba(127, 233, 255, 0.9), rgba(245, 177, 95, 0.7));
+}
+
+.drink-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(133, 231, 255, 0.42);
+  box-shadow: 0 22px 40px rgba(2, 10, 28, 0.42);
+}
+
+.drink-item .menu-copy {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.drink-item .menu-type {
+  color: rgba(214, 233, 255, 0.68);
+}
+
+.drink-item .tag {
+  color: #8ee6ff;
+}
+
+.drink-item .menu-detail {
+  max-width: 70ch;
+  color: #eef5ff;
+}
+
+.menu-item.is-hidden {
+  display: none;
+}
+

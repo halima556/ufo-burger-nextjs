@@ -1,0 +1,185 @@
+.site-header {
+  /* Фиксированная полупрозрачная навигация сверху */
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.35rem;
+  backdrop-filter: blur(8px);
+  background: rgba(5, 8, 16, 0.56);
+  border-bottom: 1px solid rgba(132, 168, 255, 0.18);
+}
+
+.brand {
+  position: relative;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  font-family: "Didot", "Bodoni 72", serif;
+  font-size: 1rem;
+  transition: color 0.22s ease, text-shadow 0.22s ease, letter-spacing 0.22s ease;
+}
+
+/* Вариант 1: чистый и спокойный */
+.brand--clean:hover,
+.brand--clean:focus-visible {
+  color: #f5f9ff;
+  letter-spacing: 0.135em;
+  text-shadow: 0 0 12px rgba(125, 220, 255, 0.2);
+}
+
+/* Вариант 2: премиальный легкий glow (активен по умолчанию) */
+.brand--glow {
+  background: linear-gradient(95deg, #ffffff 0%, #e9f4ff 44%, #f5d8a6 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.brand--glow:hover,
+.brand--glow:focus-visible {
+  letter-spacing: 0.135em;
+  text-shadow: 0 0 14px rgba(128, 221, 255, 0.3), 0 0 10px rgba(245, 191, 114, 0.22);
+}
+
+/* Вариант 3: тонкий луч под логотипом */
+.brand--beam::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -0.18rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(121, 231, 255, 0), rgba(121, 231, 255, 0.85));
+  transition: right 0.24s ease;
+}
+
+.brand--beam:hover::after,
+.brand--beam:focus-visible::after {
+  right: 0;
+}
+
+.main-nav {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.main-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  padding: 0.35rem 0.15rem;
+}
+
+.main-nav a:hover,
+.main-nav a:focus-visible {
+  color: var(--accent);
+  text-shadow: 0 0 14px rgba(128, 231, 255, 0.42);
+}
+
+.main-nav a.is-current {
+  color: #eff8ff;
+  text-shadow: 0 0 16px rgba(124, 231, 255, 0.52);
+}
+
+.nav-toggle {
+  display: inline-grid;
+  place-content: center;
+  position: relative;
+  width: 44px;
+  height: 40px;
+  padding: 0.55rem 0.58rem;
+  border: 1px solid rgba(141, 177, 255, 0.3);
+  border-radius: 11px;
+  background: rgba(8, 14, 27, 0.68);
+  cursor: pointer;
+  z-index: 115;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.nav-toggle span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: #d8ebff;
+  transform-origin: center;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.nav-toggle span:nth-child(1) {
+  transform: translate(-50%, calc(-50% - 6px));
+}
+
+.nav-toggle span:nth-child(2) {
+  transform: translate(-50%, -50%);
+}
+
+.nav-toggle span:nth-child(3) {
+  transform: translate(-50%, calc(-50% + 6px));
+}
+
+.nav-toggle.is-open span:nth-child(1) {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.nav-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-open span:nth-child(3) {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.nav-toggle.is-open {
+  position: fixed;
+  top: calc(0.95rem + 0.4rem);
+  right: calc(1rem + 0.4rem);
+}
+
+.main-nav-drawer {
+  position: fixed;
+  top: 0.95rem;
+  right: 1rem;
+  width: min(320px, calc(100% - 1.3rem));
+  padding: 1rem 1rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid rgba(141, 177, 255, 0.3);
+  overflow: hidden;
+  background: rgba(6, 11, 22, 0.95);
+  box-shadow: 0 20px 44px rgba(1, 6, 20, 0.68);
+  z-index: 110;
+}
+
+.main-nav-drawer[hidden] {
+  display: none;
+}
+
+.main-nav-drawer.is-open {
+  display: block;
+}
+
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(3, 8, 19, 0.48);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+}
+
+.nav-backdrop[hidden] {
+  display: none;
+}
+
+.nav-backdrop.is-open {
+  display: block;
+}
+

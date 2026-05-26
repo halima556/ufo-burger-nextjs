@@ -1,32 +1,37 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { ReactNode } from "react";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { JsonLd } from "@/app/components/ui/JsonLd";
 
 export const metadata: Metadata = {
-  title: "UFO Burger - Premium Closed Burgers",
-  description: "Premium closed burgers from distant worlds. Join the waitlist and connect with partners via WhatsApp.",
+  title: "UFO Burger — Premium Closed Burgers from Distant Worlds",
+  description:
+    "Cosmic flavor, premium craft, and limited first access in Wallsend. Join early and be first in line when the hatch opens.",
+  metadataBase: new URL("https://ufoburger.com"),
+  openGraph: {
+    title: "UFO Burger — Premium Closed Burgers",
+    description:
+      "Cosmic flavor, premium craft, and limited first access in Wallsend.",
+    type: "website",
+    url: "https://ufoburger.com",
+    siteName: "UFO Burger",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UFO Burger — Premium Closed Burgers",
+    description: "Cosmic flavor, premium craft, and limited first access in Wallsend.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
+        <JsonLd />
         {children}
       </body>
     </html>

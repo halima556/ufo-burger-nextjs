@@ -1,0 +1,57 @@
+/* Модальное окно для контакта с инвестором */
+.investor-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.investor-modal[hidden] {
+  display: none;
+}
+
+.investor-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 8, 18, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.investor-modal__dialog {
+  position: relative;
+  width: min(620px, 100%);
+  max-width: calc(100vw - 2rem);
+  max-height: min(88vh, 760px);
+  overflow-y: auto;
+}
+
+.investor-modal__dialog h2 {
+  margin-bottom: 0.35rem;
+}
+
+.investor-modal__dialog .section-subtitle {
+  margin-bottom: 0.8rem;
+}
+
+.investor-modal__close {
+  margin-left: auto;
+  margin-bottom: 0.55rem;
+  border: 1px solid rgba(141, 177, 255, 0.32);
+  background: rgba(8, 14, 27, 0.62);
+  color: #deebff;
+  border-radius: 999px;
+  padding: 0.45rem 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+body.is-modal-open {
+  overflow: hidden;
+}
+
+body.is-nav-open {
+  overflow: hidden;
+}
+

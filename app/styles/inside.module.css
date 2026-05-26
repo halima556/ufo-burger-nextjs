@@ -1,0 +1,157 @@
+.inside-section {
+  /* Большой визуальный блок внутренних изображений продукта */
+  width: min(1260px, calc(100% - 2.2rem));
+  margin: 0 auto;
+  padding: 1.4rem 1rem 3.1rem;
+  background:
+    linear-gradient(165deg, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.88)),
+    url("/assets/media/sternenhimmel.png") center / cover no-repeat;
+  border: 0;
+  box-shadow: none;
+}
+
+.inside-head {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.inside-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.inside-shot {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: clamp(280px, 38vh, 420px);
+  display: grid;
+  place-items: center;
+  padding: 0.65rem 0.4rem 0.8rem;
+  --inside-lift: 0px;
+  --inside-scale: 1;
+}
+
+.inside-shot:nth-child(1) {
+  grid-column: 1 / -1;
+  min-height: clamp(360px, 58vh, 620px);
+}
+
+.inside-shot:nth-child(1) img {
+  width: min(100%, 840px);
+  max-height: clamp(300px, 56vh, 640px);
+  filter: saturate(1.06) contrast(1.08) brightness(1.02) drop-shadow(0 18px 36px rgba(2, 6, 18, 0.72));
+  animation: none;
+  will-change: auto;
+}
+
+.inside-shot::before {
+  content: "";
+  position: absolute;
+  width: min(78%, 680px);
+  aspect-ratio: 1 / 0.35;
+  border-radius: 999px;
+  bottom: 10%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(123, 231, 255, 0.25), rgba(123, 231, 255, 0));
+  filter: blur(14px);
+  opacity: 0.62;
+}
+
+.inside-shot::after {
+  content: "";
+  position: absolute;
+  width: min(72%, 560px);
+  aspect-ratio: 1 / 0.34;
+  border-radius: 999px;
+  bottom: 11%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(245, 193, 115, 0.32), rgba(245, 193, 115, 0));
+  filter: blur(18px);
+  opacity: 0.32;
+  animation: none;
+}
+
+.inside-shot:nth-child(1)::after {
+  width: min(56%, 460px);
+  bottom: 9%;
+}
+
+.inside-shot img {
+  width: min(100%, 980px);
+  max-height: clamp(250px, 58vh, 560px);
+  object-fit: contain;
+  background: transparent;
+  filter: saturate(1.04) contrast(1.06) drop-shadow(0 16px 34px rgba(3, 7, 20, 0.58));
+  transform: translate3d(0, var(--inside-lift), 0) scale(var(--inside-scale));
+  transform-origin: center;
+  will-change: transform;
+  transition: transform 0.28s ease, filter 0.28s ease;
+  animation: insideLuxuryFloat 8.2s linear infinite;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .inside-shot:hover img {
+    --inside-lift: 0px;
+    --inside-scale: 1;
+    filter: saturate(1.04) contrast(1.06) drop-shadow(0 16px 34px rgba(3, 7, 20, 0.58));
+  }
+}
+
+.inside-caption {
+  margin: 0;
+  position: absolute;
+  left: 0.8rem;
+  right: 0.8rem;
+  bottom: 0.35rem;
+  text-align: center;
+  font-size: 0.84rem;
+  letter-spacing: 0.05em;
+  color: rgba(227, 236, 255, 0.95);
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.72);
+}
+
+@keyframes insideLuxuryFloat {
+  0% {
+    transform: translate3d(0, calc(var(--inside-lift) - 16px), 0) scale(var(--inside-scale)) rotate(-0.45deg);
+  }
+  12.5% {
+    transform: translate3d(7px, calc(var(--inside-lift) - 11px), 0) scale(var(--inside-scale)) rotate(-0.2deg);
+  }
+  25% {
+    transform: translate3d(10px, calc(var(--inside-lift) + 0px), 0) scale(var(--inside-scale)) rotate(0deg);
+  }
+  37.5% {
+    transform: translate3d(7px, calc(var(--inside-lift) + 11px), 0) scale(var(--inside-scale)) rotate(0.2deg);
+  }
+  50% {
+    transform: translate3d(0, calc(var(--inside-lift) + 16px), 0) scale(var(--inside-scale)) rotate(0.45deg);
+  }
+  62.5% {
+    transform: translate3d(-7px, calc(var(--inside-lift) + 11px), 0) scale(var(--inside-scale)) rotate(0.2deg);
+  }
+  75% {
+    transform: translate3d(-10px, calc(var(--inside-lift) + 0px), 0) scale(var(--inside-scale)) rotate(0deg);
+  }
+  87.5% {
+    transform: translate3d(-7px, calc(var(--inside-lift) - 11px), 0) scale(var(--inside-scale)) rotate(-0.2deg);
+  }
+  100% {
+    transform: translate3d(0, calc(var(--inside-lift) - 16px), 0) scale(var(--inside-scale)) rotate(-0.45deg);
+  }
+}
+
+@keyframes insideAuraPulse {
+  0%,
+  100% {
+    transform: translateY(0) scale(0.95);
+    opacity: 0.36;
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+    opacity: 0.58;
+  }
+}
+

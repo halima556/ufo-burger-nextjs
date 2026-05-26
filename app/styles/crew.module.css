@@ -1,0 +1,98 @@
+.crew-form {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+}
+
+.crew-count {
+  margin-top: 0.9rem;
+  padding: 0.6rem 0.72rem;
+  border-radius: 10px;
+  border: 1px solid rgba(121, 231, 255, 0.24);
+  color: #d6f6ff;
+  background: rgba(5, 15, 24, 0.58);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.crew-count:hover,
+.crew-count:focus-visible {
+  border-color: rgba(136, 230, 255, 0.56);
+  background: rgba(8, 24, 37, 0.72);
+  transform: translateY(-1px);
+}
+
+label {
+  font-size: 0.84rem;
+  color: #d5def5;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  border: 1px solid rgba(139, 177, 255, 0.35);
+  border-radius: 10px;
+  background: rgba(4, 8, 16, 0.78);
+  color: #eff3ff;
+  font-size: 16px;
+  padding: 0.65rem 0.72rem;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+input::placeholder {
+  color: #aeb7d0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.3rem;
+}
+
+.form-note {
+  margin: 0.2rem 0 0;
+  color: #9eb2d6;
+  font-size: 0.78rem;
+}
+
+.form-status {
+  min-height: 1.2rem;
+  margin: 0.15rem 0 0;
+  color: var(--accent);
+  font-size: 0.87rem;
+}
+
+.form-status.is-success {
+  color: #89f2ff;
+}
+
+.form-status.is-error {
+  color: #ffb4b2;
+}
+
+.status-area {
+  margin-top: 1rem;
+}
+
+.timeline ol {
+  margin-top: 0.8rem;
+}
+
+.site-footer {
+  border-top: 1px solid rgba(142, 175, 255, 0.24);
+  padding: 1.15rem 1.2rem 2.8rem;
+  text-align: center;
+  color: #b9c5df;
+}
+
