@@ -45,16 +45,11 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
     const { allowed, remainingMs } = checkRateLimit(rlKey, 3, 60_000);
     if (!allowed) {
       const seconds = Math.ceil(remainingMs / 1000);
-      setStatus({
-        msg: `Too many attempts. Please wait ${seconds} seconds.`,
-        type: "error",
-      });
+      setStatus({ msg: `Too many attempts. Please wait ${seconds} seconds.`, type: "error" });
       return;
     }
 
-    const honeypot = (
-      document.getElementById("investor-website") as HTMLInputElement
-    )?.value;
+    const honeypot = (document.getElementById("investor-website") as HTMLInputElement)?.value;
     if (honeypot) return;
 
     const sanitized = sanitizeFormData({
@@ -77,56 +72,42 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
     });
 
     if (!openWhatsApp(text)) {
-      setStatus({
-        msg: "WhatsApp contact is not configured yet.",
-        type: "error",
-      });
+      setStatus({ msg: "WhatsApp contact is not configured yet.", type: "error" });
       return;
     }
 
-    setStatus({
-      msg: "WhatsApp opened with your contact details.",
-      type: "success",
-    });
+    setStatus({ msg: "WhatsApp opened with your contact details.", type: "success" });
     reset();
     setTimeout(onClose, 500);
   };
 
-  // Merge ref from register with our firstInputRef
   const { ref: registerRef, ...nameRegister } = register("name");
 
   if (!isOpen) return null;
 
   return (
     <div className="investor-modal" id="investor-modal">
-      <div
-        className="investor-modal__overlay"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="investor-modal__overlay" onClick={onClose} aria-hidden="true" />
       <section
         className="investor-modal__dialog panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby="investor-modal-title"
+        style={{ position: "relative", paddingTop: "3.5rem" }}
       >
         <button
-          className="investor-modal__close"
           type="button"
           onClick={onClose}
           aria-label="Close"
+          className="modal-close-btn"
         >
-          Close
+          ✕
         </button>
 
         <h2 id="investor-modal-title">Investor Contact</h2>
         <p className="section-subtitle">SEND YOUR DETAILS TO WHATSAPP</p>
 
-        <form
-          className="crew-form"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-        >
+        <form className="crew-form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <input
             id="investor-website"
             name="investor-website"
@@ -150,18 +131,10 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
             }}
             {...nameRegister}
           />
-          {errors.name && (
-            <p className="field-error" role="alert">
-              {errors.name.message}
-            </p>
-          )}
+          {errors.name && <p className="field-error" role="alert">{errors.name.message}</p>}
 
           <label htmlFor="investor-type">LEAD TYPE</label>
-          <select
-            id="investor-type"
-            aria-invalid={!!errors.leadType}
-            {...register("leadType")}
-          >
+          <select id="investor-type" aria-invalid={!!errors.leadType} {...register("leadType")}>
             <option value="Investor">Investor</option>
             <option value="Partner">Partner</option>
             <option value="Customer">Customer</option>
@@ -177,11 +150,7 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
             aria-invalid={!!errors.email}
             {...register("email")}
           />
-          {errors.email && (
-            <p className="field-error" role="alert">
-              {errors.email.message}
-            </p>
-          )}
+          {errors.email && <p className="field-error" role="alert">{errors.email.message}</p>}
 
           <label htmlFor="investor-phone">PHONE / WHATSAPP</label>
           <input
@@ -192,11 +161,7 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
             aria-invalid={!!errors.phone}
             {...register("phone")}
           />
-          {errors.phone && (
-            <p className="field-error" role="alert">
-              {errors.phone.message}
-            </p>
-          )}
+          {errors.phone && <p className="field-error" role="alert">{errors.phone.message}</p>}
 
           <label htmlFor="investor-company">COMPANY (OPTIONAL)</label>
           <input
@@ -216,19 +181,12 @@ export function InvestorModal({ isOpen, onClose }: InvestorModalProps) {
           />
 
           <div className="form-actions">
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={isSubmitting}
-            >
+            <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Sending..." : "Send via WhatsApp"}
             </button>
           </div>
 
-          <p className="form-note">
-            Your details will be prepared in WhatsApp before sending.
-          </p>
-
+          <p className="form-note">Your details will be prepared in WhatsApp before sending.</p>
           <StatusMessage message={status.msg} type={status.type} />
         </form>
       </section>

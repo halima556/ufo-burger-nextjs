@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useModal } from "@/app/hooks/useModal";
 import { useRevealObserver } from "@/app/hooks/useRevealObserver";
 import { Header } from "@/app/components/layout/Header";
@@ -21,17 +22,18 @@ export default function Home() {
   const investorModal = useModal();
   useRevealObserver();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <ScrollProgress />
       <BackToTop />
       <FloatingInvestorCTA onClick={investorModal.open} />
       <Starfield />
-
       <Header onInvestorClick={investorModal.open} />
-
       <Hero onInvestorClick={investorModal.open} />
-
       <main>
         <LegendSection />
         <ProjectSection />
@@ -40,9 +42,7 @@ export default function Home() {
         <CrewSection />
         <BusinessSection onInvestorClick={investorModal.open} />
       </main>
-
       <Footer />
-
       <InvestorModal isOpen={investorModal.isOpen} onClose={investorModal.close} />
     </>
   );
