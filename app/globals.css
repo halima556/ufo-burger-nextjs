@@ -145,3 +145,21 @@
   z-index: 10000 !important;
   padding: 0 !important;
 }
+
+/* ── Footer padding fix ──────────────────────────────────────── */
+.site-footer {
+  padding-bottom: 5rem !important;
+}
+
+/* ── Modal close button below navbar ────────────────────────── */
+.modal-close-btn {
+  top: 4.5rem !important;
+  right: 1rem !important;
+}
+
+@media (max-width: 760px) {
+  .modal-close-btn {
+    top: 4rem !important;
+    right: 0.8rem !important;
+  }
+}

@@ -30,8 +30,8 @@ export function LegendSection() {
         </article>
 
         <article className="legend-chapter reveal-item" style={delay("0.14s")}>
-          <h3>Hook + Cliffhanger</h3>
-          <p className="section-subtitle">THE SIGNAL RETURNS</p>
+          <h3>The Signal Returns</h3>
+          <p className="section-subtitle">THE CAPSULE ACTIVATES</p>
           <p className="legend-lead">
             For years, the capsule stayed sealed. This season, it activated.
           </p>
