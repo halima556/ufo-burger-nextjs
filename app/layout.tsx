@@ -10,8 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ufoburger.com"),
   openGraph: {
     title: "UFO Burger — Premium Closed Burgers",
-    description:
-      "Cosmic flavor, premium craft, and limited first access in Wallsend.",
+    description: "Cosmic flavor, premium craft, and limited first access in Wallsend.",
     type: "website",
     url: "https://ufoburger.com",
     siteName: "UFO Burger",
@@ -21,15 +20,19 @@ export const metadata: Metadata = {
     title: "UFO Burger — Premium Closed Burgers",
     description: "Cosmic flavor, premium craft, and limited first access in Wallsend.",
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { en: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(history.scrollRestoration){history.scrollRestoration='manual';}`,
+          }}
+        />
+      </head>
       <body className="antialiased">
         <JsonLd />
         {children}
