@@ -2,6 +2,9 @@
 
 > Cosmic flavor, premium craft, and limited first access in Wallsend.
 
+**Repository:** [github.com/halima556/ufo-burger-nextjs](https://github.com/halima556/ufo-burger-nextjs)  
+**Live Demo:** [ufo-burger-nextjs.vercel.app](https://ufo-burger-nextjs.vercel.app)
+
 ## Tech Stack
 
 - **Next.js 16** — App Router, Turbopack
@@ -11,7 +14,6 @@
 - **Zod** — schema validation
 - **react-hook-form** — form state management
 
-## Project Structure
 ## Getting Started
 
 ```bash
